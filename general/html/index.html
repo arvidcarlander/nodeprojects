@@ -21,26 +21,71 @@
     </style>
 </head>
 <body>
-<script src="http://raspberrypi:3000/public/javascripts/client.js/></script>
+Test this ?
+<br>
+script src="http://raspberrypi:3000/public/javascripts/client.js/></script
 
 
+<br>
 Hi.
 
-The temperatures are:
-
-CPU of this server: 
-
-
-
-
-
-This page uses the following REST API which you can access directly as follows:
+<br> <br> Then different port in dev with salt pulls, etc.
+<br> <br> The temperatures are:
 <br>
-<a href="http://raspberrypi:3000/api/temp/cpu" > CPU temp of this server </a>
+<br>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
+<br>Brick House: 	<span id="BrickHouse">(...retrieving...)</span> <br>
+<br><br> <button type="button" onclick="loadAll()">Reload the temperatures</button>
+
+<br><br>This page uses the following REST API which you can access using the format <b>https://servername:port/api/format/temp/device</b>
+<br> <br> Examples:
+<br> <a href="api/raw/temp/cpu" > CPU temp of this server </a>
+<br> <a href="api/number/temp/cpu" > CPU temp of this server as a number</a>
+<br> <a href="api/json/temp/cpu" > CPU temp of this server in JSON format</a>
+<br> <a href="api/raw/temp/w1/tegel "> Brick House temperature in raw format</a>
+<br> <a href="api/number/temp/w1/tegel "> Brick House temperature as a number</a>
+<br> <a href="api/json/temp/w1/tegel "> Brick House temperature in JSON format</a>
+
+
+<br>
 <br>
 
-<a href="http://raspberrypi:3000/api/temp/w1 "> Brick House temperature </a>
+<script>
+	function loadThisCPU () {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("thiscpu").innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/cpu", true)
+		xhttp.send()
+	}
 
+	function loadAll () {
+		var items = []
+		document.getElementById("thiscpu").innerHTML = "..."
+		document.getElementById("BrickHouse").innerHTML = "..."
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("thiscpu").innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/cpu", true)
+		xhttp.send()
+
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("BrickHouse").innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/w1/tegel", true)
+		xhttp.send()
+	}
+
+	loadAll () 
+</script>
 
 
 
