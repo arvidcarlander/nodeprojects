@@ -26,7 +26,7 @@ router.get('/public/javascripts/client.js', function(req, res, next) {
 
 /*  */
 router.get('/api', function(req, res, next) {
-  		res.send( 'Try <a href="http://raspberrypi:3000/api/temp/w1 "> api/simple/temp/w1 </a>')
+  		res.send( 'Try <a href="api/number/temp/w1/tegel "> api/number/temp/w1/tegel </a>')
 });
 
 router.get('/api/temp/raw/w1', function(req, res, next) {
