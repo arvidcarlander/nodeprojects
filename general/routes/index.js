@@ -29,7 +29,7 @@ router.get('/api', function(req, res, next) {
   		res.send( 'Try <a href="api/number/temp/w1/tegel "> api/number/temp/w1/tegel </a>')
 });
 
-router.get('/api/temp/raw/w1', function(req, res, next) {
+router.get('/api/raw/temp/w1', function(req, res, next) {
 	exec( 'cat /sys/bus/w1/devices/28*/w1_slave'
 		,(error,stdout,stderr) => {
 		let txt = stdout
