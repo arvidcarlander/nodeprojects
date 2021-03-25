@@ -1,0 +1,38 @@
+{
+ "w1": {
+  "homebridge": {
+	"inlopp": {
+		"label":	"NotSure",
+		"device":	"28-041636780aff"
+	},
+	"badrum": {
+		"label":	"NotSure",
+		"device":	"28-0301a279df83"
+	},
+	"hall": {
+		"label":	"NotSure",
+		"device":	"28-0301a279dbf9"
+	},
+	"kök": {
+		"label":	"NotSure",
+		"device":	"28-0301a279e3e1"
+	},
+	"VetEj": {
+		"label":	"l20",
+		"device":	"28-0301a2798849"
+	},
+	"Vardagsrum": {
+		"label":	"l1a",
+		"device":	"28-0301a279f0e3"
+	},
+	"Isak": {
+		"label":	"11b",
+		"device":	"28-0301a279be75"
+	}
+  },
+  "raspberrypi":
+	{
+	"roomtemp":		"28-0301a279df82"
+	}
+  }
+}
