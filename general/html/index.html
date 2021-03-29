@@ -31,17 +31,21 @@ Hi.
 <br> <br> The temperatures are:
 <br>
 <br>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
-<br>Brick House: 	<span id="BrickHouse">(...retrieving...)</span> <br>
+<br>Duckling Heater: 	<span id="Duckling">(...retrieving...)</span> <br>
 <br><br> <button type="button" onclick="loadAll()">Reload the temperatures</button>
 
 <br><br>This page uses the following REST API which you can access using the format <b>https://servername:port/api/format/temp/device</b>
 <br> <br> Examples:
+
+<br> <a href="duckling">Refreshing duckling temperature page</a>
+
 <br> <a href="api/raw/temp/cpu" > CPU temp of this server </a>
 <br> <a href="api/number/temp/cpu" > CPU temp of this server as a number</a>
 <br> <a href="api/json/temp/cpu" > CPU temp of this server in JSON format</a>
-<br> <a href="api/raw/temp/w1/tegel "> Brick House temperature in raw format</a>
-<br> <a href="api/number/temp/w1/tegel "> Brick House temperature as a number</a>
-<br> <a href="api/json/temp/w1/tegel "> Brick House temperature in JSON format</a>
+<br> <a href="api/raw/temp/w1/tegel "> Ducklint temperature in raw format</a>
+<br> <a href="api/number/temp/w1/tegel "> Ducklint temperature as a number</a>
+<br> <a href="api/json/temp/w1/tegel "> Ducklint temperature in JSON format</a>
+<br> <a href="charttest">Chart test for Tfv</a>
 
 
 <br> Other useful links:
@@ -53,21 +57,11 @@ Hi.
 <br> <a href="http://homebridge:81"> homebridge:81 Homebridge</a>
 
 <script>
-	function loadThisCPU () {
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("thiscpu").innerHTML = this.responseText
-			}
-		}
-		xhttp.open("GET","api/number/temp/cpu", true)
-		xhttp.send()
-	}
 
 	function loadAll () {
 		var items = []
 		document.getElementById("thiscpu").innerHTML = "..."
-		document.getElementById("BrickHouse").innerHTML = "..."
+		document.getElementById("Duckling").innerHTML = "..."
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -80,7 +74,7 @@ Hi.
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("BrickHouse").innerHTML = this.responseText
+				document.getElementById("Duckling").innerHTML = this.responseText
 			}
 		}
 		xhttp.open("GET","api/number/temp/w1/tegel", true)

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    	<meta charset="UTF-8">
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    	<title>Sample Site</title>
+
+
+    <style>
+        body { 
+		background:black;
+		padding-top:50px;
+		color:white;
+	}
+	#myChart {
+		border-width: 1px;
+		border-style: solid;
+		border-color: Black;
+	}
+	.chart-container {
+		position: relative;
+    		width: 90vw;
+    		height: 90vh;
+	}
+	.center {
+		text-align: center;
+	}
+	.myClock {
+		font-size: 100px;
+	}
+	.Duckling {
+		font-size: 60px;
+	}
+	button {
+		font-size: 10px;
+		visible:false;
+	}
+    </style>
+</head>
+<body>
+
+
+
+	<div class="center">
+		<br><h1 >		<span class="myClock" id="myClock">(...retrieving...)</span> </h1>
+		<br><h1 class="Duckling">Duckling: 	<span id="DuckHeater">(...retrieving...)</span> </h1>
+		<br><button id="refreshButton" type="button" onclick=handleStopButton()>Loading...</button>
+	</div>
+
+
+
+<script>
+	// Things to adjust if required
+	var UpdateDucklingInterval = 20 // Double number of seconds as we tick halfseconds
+
+	// Internal variables
+	var h ; var m ; var s
+	var counter = 0
+	var tick = 500
+	var shouldUpdateDuckling = true
+
+
+
+	function updateClock () {
+		var today = new Date()
+		h = today.getHours()
+		m = today.getMinutes()
+		s = today.getSeconds()
+		h = (h < 10) ? "0"+ h : h
+		m = (m < 10) ? "0"+ m : m
+		s = (s < 10) ? "0"+ s : s
+		document.getElementById('myClock').innerHTML = h+":"+m+":"+s
+	}
+	function updateDuckling () {
+		document.getElementById("DuckHeater").innerHTML = "--.---"
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("DuckHeater").innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/w1/Duckling", true)
+		xhttp.send()
+	}
+
+	function revolution() {
+		if (counter === 0 && shouldUpdateDuckling) {
+			updateDuckling()
+		}
+		if (counter++ === UpdateDucklingInterval) {
+			counter=0
+		}
+		updateClock()
+		
+	}
+
+	document.getElementById("refreshButton").innerHTML = "Refreshing every 10 seconds. Click to stop"
+	revolution () 
+
+	
+
+	window.onload = function() {
+		setInterval( function() { revolution() }, tick)
+		revolution()
+	}
+
+	function handleStopButton() {
+				if (shouldUpdateDuckling) {
+					shouldUpdateDuckling = false
+					document.getElementById("refreshButton").innerHTML = "Start refreshing"
+				}else{
+					shouldUpdateDuckling = true
+					document.getElementById("refreshButton").innerHTML = "Refreshing every 10 seconds. Click to stop"
+				}
+	}
+
+</script>
+
+
+
+
+</body>
+</html>
+
