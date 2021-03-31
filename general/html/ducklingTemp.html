@@ -31,10 +31,6 @@
 	.Duckling {
 		font-size: 60px;
 	}
-	button {
-		font-size: 10px;
-		visible:false;
-	}
     </style>
 </head>
 <body>
@@ -44,7 +40,6 @@
 	<div class="center">
 		<br><h1 >		<span class="myClock" id="myClock">(...retrieving...)</span> </h1>
 		<br><h1 class="Duckling">Duckling: 	<span id="DuckHeater">(...retrieving...)</span> </h1>
-		<br><button id="refreshButton" type="button" onclick=handleStopButton()>Loading...</button>
 	</div>
 
 
@@ -94,25 +89,14 @@
 		
 	}
 
-	document.getElementById("refreshButton").innerHTML = "Refreshing every 10 seconds. Click to stop"
 	revolution () 
 
 	
-
 	window.onload = function() {
 		setInterval( function() { revolution() }, tick)
 		revolution()
 	}
 
-	function handleStopButton() {
-				if (shouldUpdateDuckling) {
-					shouldUpdateDuckling = false
-					document.getElementById("refreshButton").innerHTML = "Start refreshing"
-				}else{
-					shouldUpdateDuckling = true
-					document.getElementById("refreshButton").innerHTML = "Refreshing every 10 seconds. Click to stop"
-				}
-	}
 
 </script>
 
