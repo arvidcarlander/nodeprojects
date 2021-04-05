@@ -2,6 +2,7 @@ const {exec} = require("child_process");
 var express = require('express');
 var router = express.Router();
 var path = require('path')
+var telldus = require("../utils/telldus.js")
 //var Math = require('Math')
 
 /* GET home page. */
@@ -19,13 +20,26 @@ router.get('/', function(req, res, next) {
 
 // Test of chart.js for Tfv
 router.get('/charttest', function(req, res, next) {
-  //res.render('index', { title: 'chart.js' });
 
     	if (req.query.name){
         	console.log(`Chart test: Requesting ${req.query.name}`)
     	}
     	console.log("Returning the static charttest.htm")
 	res.sendFile(path.join(__dirname, '../html', 'charttest.html'));
+});
+
+router.get('/temp', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '../html', 'temp.html'));
+});
+
+router.get('/api/:fmt/temp/outdoors', function(req, res, next) {
+
+	const fubar = telldus.api.getSensorInfo(1540043414)
+		.then(sensorInfo => {
+			//sensorInfo.JSON = JSON.parse(sensorInfo)
+  			//res.send(sensorInfo.JSON.id)
+  			res.send(sensorInfo.data[0].value)
+		})
 });
 
 router.get('/public/javascripts/client.js', function(req, res, next) {
@@ -63,6 +77,9 @@ function w1temp(strinp) {
 router.get('/api/:fmt/temp/w1/tegel', function(req, res, next) {
 	exec( 'cat /sys/bus/w1/devices/28-0301a279df82/w1_slave'
 		,(error,stdout,stderr) => {
+		if (error) {
+			res.send("Error: "+error)
+		}
 		let t = w1temptostring(stdout)
 		switch (req.params.fmt) {
 			case "raw":
@@ -73,6 +90,33 @@ router.get('/api/:fmt/temp/w1/tegel', function(req, res, next) {
 				break
 			case "json":
 				res.json( { "name" : "Tegel", "temp" : t})
+				break
+			default:
+				res.send("Unknown format")
+		
+		}
+	})
+});
+router.get('/api/:fmt/temp/w1/vitavillan', function(req, res, next) {
+	exec( "sudo -u pi ssh homebridge './cattojson'"
+		,(error,stdout,stderr) => {
+		if (error) {
+			res.send("Error: "+error)
+		}
+		
+		var json=JSON.parse(stdout)
+
+		//let t = w1temptostring(stdout)
+		switch (req.params.fmt) {
+			case "raw":
+				res.send(stdout)
+				break
+			case "number":
+				res.send(t)
+				break
+			case "json":
+				//res.json( { "name" : "Tegel", "temp" : t})
+				res.json( json )
 				break
 			default:
 				res.send("Unknown format")
@@ -101,6 +145,11 @@ let getDuck = function(req, res, next) {
 	})
 }
 router.get('/api/:fmt/temp/w1/Duckling', getDuck);
+
+router.get('/Outdoors', function(req, res, next) {
+
+	res.sendFile(path.join(__dirname, '../html', 'outdoorsTemp.html'));
+});
 
 router.get('/Duckling', function(req, res, next) {
 
