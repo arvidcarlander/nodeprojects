@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    	<meta charset="UTF-8">
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	     <script>
+	     if (!window.Chart) document.write('Could not load chart.min.js');
+        	console.dir(window)
+	     </script>
+
+
+
+    	<title>Sample Site</title>
+
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+
+    <style>
+        body { padding-top:50px; }
+	#myChart {
+		border-width: 1px;
+		border-style: solid;
+		border-color: Black;
+	}
+	.chart-container {
+		position: relative;
+    		width: 90vw;
+    		height: 90vh;
+	}
+
+    </style>
+	<style type="text/css">/* Chart.js */
+	@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,
+	.chartjs-size-monitor-expand,
+	.chartjs-size-monitor-shrink{position:absolute;
+	direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;
+	pointer-events:none;visibility:hidden;
+	z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;
+	width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}
+     </style>
+
+</head>
+<body>
+
+
+<div class="chart-container">
+	<canvas id="chart1" ></canvas>
+</div>
+
+
+
+<script>
+
+
+	let debug = false
+
+
+
+	function updateChart1() {
+		getData("api/json/temp/w1/tegel")
+		getData("api/json/temp/Telldus/1540043414") // ute
+		getData("api/json/temp/Telldus/1540043189")
+		getData("api/json/temp/Telldus/1540845504") // Ällingar
+	}
+	function addData(label,value) {
+		thisChart.data.labels.push(label)
+		thisChart.data.datasets[0].data.push(value)
+		thisChart.update()
+	}
+
+	function getData(apiurl) {
+		// Outdoors
+		debug && console.log("getData starts")
+		outdoorsDataRequest = new XMLHttpRequest();
+		outdoorsDataRequest.onreadystatechange = function() {
+			debug && console.log("In getData onreadystatechange handler")
+			if (this.readyState == 4 && this.status == 200) {
+				//console.log("getData got from api: ")
+				console.dir(this.responseText)
+				var JSONdata = JSON.parse(this.responseText)
+				//console.dir(JSONdata)
+				//console.dir("Name is " + JSONdata.name + " Temp is " + JSONdata.temp)
+				addData(JSONdata.name,JSONdata.temp)
+			} else {
+				//console.log("Error or data not ready from API")
+			}
+			//console.dir(this)
+		}
+		outdoorsDataRequest.open("GET",apiurl, true)
+		outdoorsDataRequest.send()
+	}
+
+
+
+
+
+	
+	var inputData 
+	var chart1Data
+	var thisChart
+
+	function drawChart1(data) {
+	
+
+		var ctx = document.getElementById("chart1").getContext('2d') 
+		thisChart =  new Chart(ctx, {
+		//window.bar1 = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				//labels	: ["Tegel","Ute"],
+				labels	: [],
+				datasets: [ {
+					//label: 'Dataset 1',
+					  backgroundColor: [
+					      'rgba(255, 099, 132, 0.50)',
+					      'rgba(255, 159, 064, 0.50)',
+					      'rgba(255, 205, 086, 0.50)',
+					      'rgba(075, 192, 192, 0.50)',
+					      'rgba(054, 162, 235, 0.50)',
+					      'rgba(153, 102, 255, 0.50)',
+					      'rgba(201, 203, 207, 0.50)',
+					      'rgba(255, 099, 132, 0.50)',
+					      'rgba(255, 159, 064, 0.50)',
+					      'rgba(255, 205, 086, 0.50)',
+					      'rgba(075, 192, 192, 0.50)',
+					      'rgba(054, 162, 235, 0.50)',
+					      'rgba(153, 102, 255, 0.50)',
+					      'rgba(201, 203, 207, 0.50)'
+					    ],
+
+					borderColor: [
+					      'rgba(255, 099, 132)',
+					      'rgba(255, 159, 064)',
+					      'rgba(255, 205, 086)',
+					      'rgba(075, 192, 192)',
+					      'rgba(054, 162, 235)',
+					      'rgba(153, 102, 255)',
+					      'rgba(201, 203, 207)',
+					      'rgba(255, 099, 132)',
+					      'rgba(255, 159, 064)',
+					      'rgba(255, 205, 086)',
+					      'rgba(075, 192, 192)',
+					      'rgba(054, 162, 235)',
+					      'rgba(153, 102, 255)',
+					      'rgba(201, 203, 207)'
+					],
+					borderWidth:1,
+					data: []
+				  } ]
+			},
+			options: {
+				responsive: true,
+				scales : {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true}
+					}]
+				},
+				legend: {
+					position: 'top',
+					display: false,
+				},
+				tooltips: {
+					callbacks: {
+						label: function(toolTipItem)  {
+							return toolTipItem.yLabel
+						}
+					}
+				},
+				title: {
+					display: true,
+					//text: "Temperaturer"
+				}
+			}
+		})
+	}
+	updateChart1()
+
+	window.onload = drawChart1()
+
+
+</script>
+</body>
+</html>
+

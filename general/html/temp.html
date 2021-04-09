@@ -44,7 +44,8 @@
 		<br><h1 class="clock">			<span id="myClock">(...retrieving...)</span> </h1>
 		<br><h1 class="date" >			<span id="myDate">Måndag 32/13</span> </h1>
 		<br><h1 class="temp" >	Utetemp 	<span id="outdoors">(...retrieving...)</span> </h1>
-		<br><h1 class="temp" >	Ällingar 	<span id="duckling">(...retrieving...)</span> </h1>
+		<br><h1 class="temp" >	Älling 		<span id="duckling">(...retrieving...)</span> </h1>
+		<br><h1 class="temp" >	Ällingling 	<span id="tegel">(...retrieving...)</span> </h1>
 	</div>
 
 
@@ -85,14 +86,25 @@
 		xhttp.send()
 
 		// Ducklings
-		document.getElementById("duckling").innerHTML = "-.-"
+		document.getElementById("tegel").innerHTML = "-.-"
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("duckling").innerHTML = this.responseText
+				document.getElementById("tegel").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/w1/duckling", true)
+		xhttp.open("GET","api/number/temp/w1/tegel", true)
+		xhttp.send()
+
+		// Ducklingling
+		document.getElementById("tegel").innerHTML = "-.-"
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("ducklingling").innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/w1/tegel", true)
 		xhttp.send()
 	}
 

@@ -28,18 +28,71 @@ router.get('/charttest', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '../html', 'charttest.html'));
 });
 
+router.get('/tempbar', function(req, res, next) {
+    	if (req.query.name){
+        	console.log(`Chart test: Requesting ${req.query.name}`)
+    	}
+    	console.log("Returning the static charttest.htm")
+	res.sendFile(path.join(__dirname, '../html', 'tempbar.html'));
+});
+
 router.get('/temp', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '../html', 'temp.html'));
 });
 
 router.get('/api/:fmt/temp/outdoors', function(req, res, next) {
 
-	const fubar = telldus.api.getSensorInfo(1540043414)
-		.then(sensorInfo => {
-			//sensorInfo.JSON = JSON.parse(sensorInfo)
-  			//res.send(sensorInfo.JSON.id)
-  			res.send(sensorInfo.data[0].value)
-		})
+	function getTelldus(id) {
+		const fubar = telldus.api.getSensorInfo(id)
+			.then(sensorInfo => {
+				//sensorInfo.JSON = JSON.parse(sensorInfo)
+				//res.send(sensorInfo.JSON.id)
+				//res.send(sensorInfo.data[0].value)
+				t=sensorInfo.data[0].value
+				switch (req.params.fmt) {
+					case "raw":
+						res.send(t)
+						break
+					case "number":
+						res.send(t)
+						break
+					case "json":
+						res.json( { "name" : "Outdoors", "temp" : t})
+						break
+					default:
+						res.send("Unknown format")
+				
+				}
+			})
+	}
+	// Outdoors id
+	getTelldus(1540043414)
+});
+
+router.get('/api/:fmt/temp/Telldus/:id', function(req, res, next) {
+
+	function getTelldus(id) {
+		const fubar = telldus.api.getSensorInfo(id)
+			.then(sensorInfo => {
+				tempValue=sensorInfo.data[0].value
+				tempName=sensorInfo.name
+				switch (req.params.fmt) {
+					case "raw":
+						res.send(tempValue)
+						break
+					case "number":
+						res.send(tempValue)
+						break
+					case "json":
+						res.json( { "name" : tempName, "temp" : tempValue})
+						break
+					default:
+						res.send("Unknown format")
+				
+				}
+			})
+	}
+	getTelldus(req.params.id)
 });
 
 router.get('/public/javascripts/client.js', function(req, res, next) {
@@ -89,7 +142,7 @@ router.get('/api/:fmt/temp/w1/tegel', function(req, res, next) {
 				res.send(t)
 				break
 			case "json":
-				res.json( { "name" : "Tegel", "temp" : t})
+				res.json( { "name" : "Ducklingling", "temp" : t})
 				break
 			default:
 				res.send("Unknown format")
