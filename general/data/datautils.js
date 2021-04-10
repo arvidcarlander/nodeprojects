@@ -2,6 +2,8 @@
 
 var byname=require('./general.json')
 
+
+
 var by28 = {}
 for (const host in byname.w1) {
 	console.log(`host is: ${host}`)
@@ -15,6 +17,8 @@ for (const host in byname.w1) {
 	
 	}
 }
+
+
 
 data={"by28":by28, "byname":byname}
 exports.data = data

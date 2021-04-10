@@ -45,7 +45,7 @@
 		<br><h1 class="date" >			<span id="myDate">Måndag 32/13</span> </h1>
 		<br><h1 class="temp" >	Utetemp 	<span id="outdoors">(...retrieving...)</span> </h1>
 		<br><h1 class="temp" >	Älling 		<span id="duckling">(...retrieving...)</span> </h1>
-		<br><h1 class="temp" >	Ällingling 	<span id="tegel">(...retrieving...)</span> </h1>
+		<br><h1 class="temp" >	Ällingling 	<span id="ducklingling">(...retrieving...)</span> </h1>
 	</div>
 
 
@@ -66,11 +66,14 @@
 		h = today.getHours()
 		m = today.getMinutes()
 		s = today.getSeconds()
+		month	= today.getMonth()
+		day	= today.getDay()
 		h = (h < 10) ? "0"+ h : h
 		m = (m < 10) ? "0"+ m : m
 		s = (s < 10) ? "0"+ s : s
 		//document.getElementById('myClock').innerHTML = h+":"+m+":"+s
 		document.getElementById('myClock').innerHTML = h+":"+m
+		document.getElementById('myDate').innerHTML = day + "/" + month
 	}
 	function update () {
 
@@ -85,26 +88,25 @@
 		xhttp.open("GET","api/number/temp/outdoors", true)
 		xhttp.send()
 
-		// Ducklings
-		document.getElementById("tegel").innerHTML = "-.-"
+		// Duckling
+		//document.getElementById("duckling").innerHTML = "-.-"
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("tegel").innerHTML = this.responseText
+				document.getElementById("duckling").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/w1/tegel", true)
+		xhttp.open("GET","api/number/temp/duckling", true)
 		xhttp.send()
 
 		// Ducklingling
-		document.getElementById("tegel").innerHTML = "-.-"
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				document.getElementById("ducklingling").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/w1/tegel", true)
+		xhttp.open("GET","api/number/temp/w1/ducklingling", true)
 		xhttp.send()
 	}
 

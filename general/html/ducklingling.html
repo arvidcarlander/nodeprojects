@@ -28,7 +28,7 @@
 	.myClock {
 		font-size: 100px;
 	}
-	.Duckling {
+	.detail {
 		font-size: 60px;
 	}
     </style>
@@ -39,7 +39,7 @@
 
 	<div class="center">
 		<br><h1 >		<span class="myClock" id="myClock">(...retrieving...)</span> </h1>
-		<br><h1 class="Duckling">Duckling: 	<span id="DuckHeater">(...retrieving...)</span> </h1>
+		<br><h1 class="detail">Ducklingling: 	<span id="Ducklingling">(...retrieving...)</span> </h1>
 	</div>
 
 
@@ -66,21 +66,20 @@
 		s = (s < 10) ? "0"+ s : s
 		document.getElementById('myClock').innerHTML = h+":"+m+":"+s
 	}
-	function updateDuckling () {
-		document.getElementById("DuckHeater").innerHTML = "--.---"
+	function update () {
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("DuckHeater").innerHTML = this.responseText
+				document.getElementById("Ducklingling").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/w1/Duckling", true)
+		xhttp.open("GET","api/number/temp/w1/Ducklingling", true)
 		xhttp.send()
 	}
 
 	function revolution() {
 		if (counter === 0 && shouldUpdateDuckling) {
-			updateDuckling()
+			update()
 		}
 		if (counter++ === UpdateDucklingInterval) {
 			counter=0
