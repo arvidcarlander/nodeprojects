@@ -61,33 +61,73 @@ router.get('/temp', function(req, res, next) {
 });
 
 // TODO: The following two should merge and generalize
-router.get('/api/:fmt/temp/duckling', function(req, res, next) {
-
+router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
 	function getTelldus(id) {
 		const fubar = telldus.api.getSensorInfo(id)
 			.then(sensorInfo => {
 				//sensorInfo.JSON = JSON.parse(sensorInfo)
 				//res.send(sensorInfo.JSON.id)
 				//res.send(sensorInfo.data[0].value)
-				t=sensorInfo.data[0].value
+				console.dir(sensorInfo)
+
+				if (  sensorInfo) {
+					allJSON=sensorInfo.data[0]
+					name=sensorInfo.name
+					temp=sensorInfo.data[0].value
+				} else {
+					console.log("Error: Telldus returned nothing. Unknown device?")
+					temp = 0
+					name = "unknown"
+					allJSON={}
+				}
+				if(sensorInfo.data[0].name != "temp") {
+					console.log("Error: Telldus returned no temp. Humidity?")
+					temp = 0
+					name = "unknown"
+					allJSON={}
+				}
 				switch (req.params.fmt) {
 					case "raw":
-						res.send(t)
+						res.send(temp)
 						break
 					case "number":
-						res.send(t)
+						res.send(temp)
 						break
 					case "json":
-						res.json( { "name" : "duckling", "temp" : t})
+						// Standard format
+						res.json( { "name" : name, "temp" : temp})
+						break
+					case "rawjson":
+						// Return the unadulterated JSON
+						res.json(allJSON)
+						//console.dir(allJSON)
 						break
 					default:
-						res.send("Unknown format")
+						res.send("Unknown format in API request")
 				
 				}
 			})
 	}
-	// duckling id
-	getTelldus( 1540845504)
+	//getTelldus( 1540845504)
+
+	switch (req.params.item) {
+		case "Outside": 		
+			deviceNumber = 1540043414
+			break
+		case "duckling":
+		case "ducklings":
+			deviceNumber = 1540845504
+			break
+		case "Ducks": 		
+			deviceNumber = 1540043189
+			break
+		default:
+			// If item not recognized, hope that item is a number and pass it along
+			deviceNumber =  req.params.item
+	}
+
+	getTelldus( deviceNumber)
+				
 });
 router.get('/api/:fmt/temp/outdoors', function(req, res, next) {
 
@@ -181,7 +221,7 @@ router.get('/api/:fmt/temp/w1/ducklingling', function(req, res, next) {
 				res.send(t)
 				break
 			case "json":
-				res.json( { "name" : "Ducklingling", "temp" : t})
+				res.json( { "name" : "Miniällingar", "temp" : t})
 				break
 			default:
 				res.send("Unknown format")
@@ -217,16 +257,13 @@ router.get('/api/:fmt/temp/w1/vitavillan', function(req, res, next) {
 	})
 });
 
-router.get('/api/:fmt/temp/w1/DucklingLing', get28);
 
-router.get('/Outdoors', function(req, res, next) {
+// For top-level requests, simply try sending an html  file with the same name as the request. Works for http://xxx/ducklings if there is a page htmp/ducklings/html
+router.get('/:requestName', function(req, res, next) {
 
-	res.sendFile(path.join(__dirname, '../html', 'outdoorsTemp.html'));
-});
-
-router.get('/DucklingLing', function(req, res, next) {
-
-	res.sendFile(path.join(__dirname, '../html', 'ducklingling.html'));
+	let requestName = req.params.requestName
+	//res.sendFile(path.join(__dirname, '../html', 'outdoorsTemp.html'));
+	res.sendFile(path.join(__dirname, '../html', requestName + '.html'));
 });
 
 router.get('/api/:fmt/temp/cpu', function(req, res, next) {
