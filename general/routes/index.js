@@ -37,32 +37,7 @@ var telldus = require("../utils/telldus.js")
 		})
 	}
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  //res.render('index', { title: 'Express' });
-
-	if (req.query.name){
-		console.log(`Requesting ${req.query.name}`)
-	}
-	console.log("Returning the static index.htm")
-	res.sendFile(path.join(__dirname, '../html', 'index.html'));
-});
-
-router.get('/tempbar', function(req, res, next) {
-	if (req.query.name){
-		console.log(`Chart test: Requesting ${req.query.name}`)
-	}
-	console.log("Returning the static charttest.htm")
-	res.sendFile(path.join(__dirname, '../html', 'tempbar.html'));
-});
-
-router.get('/temp', function(req, res, next) {
-	res.sendFile(path.join(__dirname, '../html', 'temp.html'));
-});
-
-// TODO: The following two should merge and generalize
-router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
-	function getTelldus(id) {
+	function getTelldus(id,req,res) {
 		const fubar = telldus.api.getSensorInfo(id)
 			.then(sensorInfo => {
 				//sensorInfo.JSON = JSON.parse(sensorInfo)
@@ -108,17 +83,44 @@ router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
 				}
 			})
 	}
-	//getTelldus( 1540845504)
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  //res.render('index', { title: 'Express' });
+
+	if (req.query.name){
+		console.log(`Requesting ${req.query.name}`)
+	}
+	console.log("Returning the static index.htm")
+	res.sendFile(path.join(__dirname, '../html', 'index.html'));
+});
+
+router.get('/tempbar', function(req, res, next) {
+	if (req.query.name){
+		console.log(`Chart test: Requesting ${req.query.name}`)
+	}
+	console.log("Returning the static charttest.htm")
+	res.sendFile(path.join(__dirname, '../html', 'tempbar.html'));
+});
+
+router.get('/temp', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '../html', 'temp.html'));
+});
+
+// All Telldus items
+// TODO: Should merge with W1 and remove /telldus/
+router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
 
 	switch (req.params.item) {
-		case "Outside": 		
+		case "outside": 		
+		case "outdoors": 		
 			deviceNumber = 1540043414
 			break
 		case "duckling":
 		case "ducklings":
 			deviceNumber = 1540845504
 			break
-		case "Ducks": 		
+		case "ducks": 		
 			deviceNumber = 1540043189
 			break
 		default:
@@ -126,62 +128,13 @@ router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
 			deviceNumber =  req.params.item
 	}
 
-	getTelldus( deviceNumber)
+	getTelldus( deviceNumber,req,res)
 				
-});
-router.get('/api/:fmt/temp/outdoors', function(req, res, next) {
-
-	function getTelldus(id) {
-		const fubar = telldus.api.getSensorInfo(id)
-			.then(sensorInfo => {
-				//sensorInfo.JSON = JSON.parse(sensorInfo)
-				//res.send(sensorInfo.JSON.id)
-				//res.send(sensorInfo.data[0].value)
-				t=sensorInfo.data[0].value
-				switch (req.params.fmt) {
-					case "raw":
-						res.send(t)
-						break
-					case "number":
-						res.send(t)
-						break
-					case "json":
-						res.json( { "name" : "Outdoors", "temp" : t})
-						break
-					default:
-						res.send("Unknown format")
-				
-				}
-			})
-	}
-	// Outdoors id
-	getTelldus(1540043414)
 });
 
 router.get('/api/:fmt/temp/Telldus/:id', function(req, res, next) {
 
-	function getTelldus(id) {
-		const fubar = telldus.api.getSensorInfo(id)
-			.then(sensorInfo => {
-				tempValue=sensorInfo.data[0].value
-				tempName=sensorInfo.name
-				switch (req.params.fmt) {
-					case "raw":
-						res.send(tempValue)
-						break
-					case "number":
-						res.send(tempValue)
-						break
-					case "json":
-						res.json( { "name" : tempName, "temp" : tempValue})
-						break
-					default:
-						res.send("Unknown format")
-				
-				}
-			})
-	}
-	getTelldus(req.params.id)
+	getTelldus(req.params.id,req,res)
 });
 
 router.get('/public/javascripts/client.js', function(req, res, next) {
@@ -194,10 +147,10 @@ router.get('/public/javascripts/client.js', function(req, res, next) {
 
 /*  */
 router.get('/api', function(req, res, next) {
-		res.send( 'Try <a href="api/number/temp/w1/Duckling "> api/number/temp/w1/Duckling </a>')
+		res.send( 'Try <a href="api/number/temp/Duckling "> api/number/temp/Duckling </a>')
 });
 
-router.get('/api/raw/temp/w1', function(req, res, next) {
+router.get('/api/raw/temp/28', function(req, res, next) {
 	exec( 'cat /sys/bus/w1/devices/28*/w1_slave'
 		,(error,stdout,stderr) => {
 		let txt = stdout
@@ -206,7 +159,7 @@ router.get('/api/raw/temp/w1', function(req, res, next) {
 });
 
 
-router.get('/api/:fmt/temp/w1/ducklingling', function(req, res, next) {
+router.get('/api/:fmt/temp/ducklingling', function(req, res, next) {
 	exec( 'cat /sys/bus/w1/devices/28-0301a279df82/w1_slave'
 		,(error,stdout,stderr) => {
 		if (error) {
@@ -229,7 +182,7 @@ router.get('/api/:fmt/temp/w1/ducklingling', function(req, res, next) {
 		}
 	})
 });
-router.get('/api/:fmt/temp/w1/vitavillan', function(req, res, next) {
+router.get('/api/:fmt/temp/vitavillan', function(req, res, next) {
 	exec( "sudo -u pi ssh homebridge './cattojson'"
 		,(error,stdout,stderr) => {
 		if (error) {
@@ -262,7 +215,6 @@ router.get('/api/:fmt/temp/w1/vitavillan', function(req, res, next) {
 router.get('/:requestName', function(req, res, next) {
 
 	let requestName = req.params.requestName
-	//res.sendFile(path.join(__dirname, '../html', 'outdoorsTemp.html'));
 	res.sendFile(path.join(__dirname, '../html', requestName + '.html'));
 });
 

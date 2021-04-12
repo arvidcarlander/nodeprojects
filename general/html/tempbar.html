@@ -63,7 +63,7 @@
 
 
 	function updateChart1() {
-		getData("api/json/temp/w1/ducklingling")		// Ällingling
+		getData("api/json/temp/ducklingling")		// Ällingling
 		getData("api/json/temp/Telldus/1540043414") 	// ute
 		getData("api/json/temp/Telldus/1540043189") 	// Ankor
 		getData("api/json/temp/Telldus/1540845504") 	// Ällingar
@@ -82,7 +82,7 @@
 			debug && console.log("In getData onreadystatechange handler")
 			if (this.readyState == 4 && this.status == 200) {
 				//console.log("getData got from api: ")
-				console.dir(this.responseText)
+				debug && console.dir(this.responseText)
 				var JSONdata = JSON.parse(this.responseText)
 				//console.dir(JSONdata)
 				//console.dir("Name is " + JSONdata.name + " Temp is " + JSONdata.temp)
