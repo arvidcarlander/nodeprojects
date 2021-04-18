@@ -4,8 +4,7 @@ var sourceData=require('./general.json')
 var debug = false
 
 
-
-
+// Same data as objects keyed on the w1 28 code
 var by28 = {}
 for (const host in sourceData.w1) {
 	debug && console.log(`host is: ${host}`)
@@ -21,7 +20,8 @@ for (const host in sourceData.w1) {
 debug &&console.log("by28 is: ")
 debug &&console.dir(by28)
 
-var byName = []
+// Same data as an array of objects
+var asArray = []
 for (const type in sourceData) {
 	for (const host in sourceData[type]) {
 		debug && console.log(`host is: ${host}`)
@@ -31,11 +31,10 @@ for (const type in sourceData) {
 			var device=sourceData[type][host][name]["device"]
 			debug && console.log("device is: " + device)
 			byName.push({
-				name: 	name,
-				device:	device,
 				type:	type,
-				host:	host
-
+				host:	host,
+				name: 	name,
+				device:	device
 		
 			})
 		}
@@ -44,6 +43,7 @@ for (const type in sourceData) {
 
 
 
-exports.sourceData=sourceData
-exports.by28=by28
-exports.byName=byName
+exports.sourceData=sourceData	// Original general.json objects: {type, {host, {name, {label, device}}}}
+exports.by28=by28		// Objects keyed by w1 28 number
+exports.asArray=asArray		// Same data as an array of objects
+//exports.byName=byName		// Same data as an array of objects

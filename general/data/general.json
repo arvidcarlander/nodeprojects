@@ -1,9 +1,9 @@
 {
   "telldus": {
 	"A5": {
-		"Outside": 		{ "device":	"1540043414" },
-		"Ducklings": 		{ "device":	"1540845504" },
-		"Ducks": 		{ "device":	"1540043189" }
+		"Outside": 	{				"device":	"1540043414" },
+		"Ducklings": 	{				"device":	"1540845504" },
+		"Ducks": 	{				"device":	"1540043189" }
 	}
   },
   "w1": {
@@ -17,7 +17,7 @@
 		"SovBV": 	{ "label":	"11b",		"device":	"28-0301a279be75" }
 	},
 	"raspberrypi": {
-		"roomtemp": 	{ "label":	"none",		"device":	"28-0301a279df82" }
+		"Kycklingar": 	{ 				"device":	"28-0301a279df82" }
 	}
   }
 }

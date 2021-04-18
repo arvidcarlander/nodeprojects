@@ -49,8 +49,8 @@
 		<div class="clock">			<span id="myClock"></span> </div>
 		<br><br><div class="date" >			<span id="myDate"></span> </div>
 		<br><br><div class="temp" >	Utetemp 	<span id="outdoors"></span> </div>
-		<div class="temp" >	Älling 		<span id="duckling"></span> </div>
-		<div class="temp" >	Ällingling 	<span id="ducklingling"></span> </div>
+		<div class="temp" >	Ällingar 		<span id="duckling"></span> </div>
+		<div class="temp" >	Kycklingar 	<span id="ducklingling"></span> </div>
 	</div>
 
 
@@ -67,7 +67,7 @@
 
 
 	function updateClock () {
-		var dagar = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"]
+		var dagar = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag" ]
 		var today = new Date()
 		h = today.getHours()
 		m = today.getMinutes()
@@ -80,7 +80,7 @@
 		s = (s < 10) ? "0"+ s : s
 		//document.getElementById('myClock').innerHTML = h+":"+m+":"+s
 		document.getElementById('myClock').innerHTML = h+":"+m
-		document.getElementById('myDate').innerHTML = dagar[weekDay - 1] + " " + day + "/" + (month + 1)
+		document.getElementById('myDate').innerHTML = dagar[weekDay ] + " " + day + "/" + (month + 1)
 	}
 	function update () {
 
