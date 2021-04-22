@@ -9,15 +9,15 @@ var opts = {
   address: 0x3C
 };
 
-let linefeed=15
-let debug = true
+let linefeed=16
+let debug = false
 
 var oled = new oled(i2cBus, opts);
 
 let x=0
 let y=0
 
-//oled.writeString(font,2,'    ready',1,true)
+oled.writeString(font,2,'    ready',1,true)
 
 function clear () {
 	x=0
@@ -41,8 +41,8 @@ function newLine () {
 function writeLines (textArray) {
 	clear()
 	if ( ! Array.isArray(textArray)) {
-		debug && console.log("writeLines: Found string: " + textLine)
 		let textLine = textArray
+		debug && console.log("writeLines: Found string: " + textLine)
 		writeLine(textLine)
 	} else {
 		debug && console.log("writeLines: Found array: ")
@@ -54,8 +54,7 @@ function writeLines (textArray) {
 	
 }
 
-//clear()
-
+clear()
 //writeLine(font,2,'    Ready',1,true)
 
 module.exports.oled=oled
