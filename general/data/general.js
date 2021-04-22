@@ -20,8 +20,9 @@ for (const host in sourceData.w1) {
 debug &&console.log("by28 is: ")
 debug &&console.dir(by28)
 
-// Same data as an array of objects
+// Same data as an array of objects and as object indexed by name
 var asArray = []
+var byName = {}
 for (const type in sourceData) {
 	for (const host in sourceData[type]) {
 		debug && console.log(`host is: ${host}`)
@@ -30,20 +31,23 @@ for (const type in sourceData) {
 			//console.log(byName[sourceData[type][host][name].device)
 			var device=sourceData[type][host][name]["device"]
 			debug && console.log("device is: " + device)
-			byName.push({
+			newObject = {
 				type:	type,
 				host:	host,
 				name: 	name,
 				device:	device
 		
-			})
+			}
+			asArray.push(newObject)
+			byName[name]=newObject
 		}
 	}
 }
 
 
 
+
 exports.sourceData=sourceData	// Original general.json objects: {type, {host, {name, {label, device}}}}
 exports.by28=by28		// Objects keyed by w1 28 number
 exports.asArray=asArray		// Same data as an array of objects
-//exports.byName=byName		// Same data as an array of objects
+exports.byName=byName		// Objects keyed by name

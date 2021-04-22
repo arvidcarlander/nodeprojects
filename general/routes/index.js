@@ -3,10 +3,12 @@ var express = require('express');
 var router = express.Router();
 var path = require('path')
 var telldus = require("../utils/telldus.js")
+var data = require("../data/general.js")
+var serverName = require('os').hostname()
 //var Math = require('Math')
 var debug = false
 // Max age for Telldus info in seconds
-var maxAgeTelldus = 5 * 60 
+var maxAgeTelldus = 10 * 60 
 
 
 /* GET home page. */
@@ -25,27 +27,21 @@ router.get('/:requestName', function(req, res, next) {
 //	Combine W1 and Telldus based on type in database. Check with db whether the device matches w1 or telldus (or oled?) name or id and call relevant function
 //	Remove /telldus/
 //	Switch order to temp/format instead of format/temp
-//	Check age on Telldus stuff. Return 0.0 if older than 5 mins
 //	Provide reasonable errors to client if Telldus, W1, or OLED does not respond
 //	Teach clients to handle those errors
-//	Standardize temp number to one decimal
 //	Add timestamp to standard format JSON
+//	DONE Standardize temp number to one decimal
+//	DONE Check age on Telldus stuff. Return 0.0 if older than 5 mins
+//	Handle case where telldus is passed non-existing device by device number
+//	Tell cpu how to pass request to another server
+
 router.get('/api/:fmt/temp/telldus/:item', function(req, res, next) {
-	switch (req.params.item) {
-		case "outside": 		
-		case "outdoors": 		
-			deviceNumber = 1540043414
-			break
-		case "duckling":
-		case "ducklings":
-			deviceNumber = 1540845504
-			break
-		case "ducks": 		
-			deviceNumber = 1540043189
-			break
-		default:
-			// If item not recognized, hope that item is a number and pass it along
-			deviceNumber =  req.params.item
+
+	if (data.byName[req.params.item]) {
+		deviceNumber = data.byName[req.params.item].device
+	}else{
+		// If item not recognized, hope that item is a number and pass it along
+		deviceNumber =  req.params.item
 	}
 
 	getTelldus( deviceNumber,req,res)
@@ -106,7 +102,12 @@ router.get('/api/:fmt/temp/vitavillan', function(req, res, next) {
 
 
 router.get('/api/:fmt/temp/cpu/:server', function(req,res,next) {
-	getCpu(req, res, next)
+	if(req.params.server == serverName ) {
+		getCpu(req, res, next)
+		}else{
+			console.log("cpu: can not pass requests yet")
+			res.send("Unable")
+		}
 })
 
 
@@ -121,6 +122,7 @@ function getCpu(req,res,next) {
 		t = t.replace("temp=","")
 		t = t.replace("\'C","")
 
+		t=setNumberFormat(t)
 		switch (req.params.fmt) {
 			case "raw":
 				res.send(stdout)
@@ -153,17 +155,21 @@ function w1temp(strinp) {
 
 function setNumberFormat(nr) {
         console.log("it is now: " + nr)
+        if (  /\-/.test(nr)) {
+                console.log("Dash")
+                return("--.-")
+        }
         if ( ! /\./.test(nr)) {
                 console.log("has no .")
                 nr = nr + ".0"
                 console.log("it is now: " + nr)
         }
-        nr = "000" + nr + "000"
+        nr = "   " + nr + "000"
         console.log("it is now: " + nr)
         let a = nr.split(".")
         console.log("a0 is now: " + a[0])
         console.log("a1 is now: " + a[1])
-        let left  = a[0].substring(3,12)
+        let left  = a[0].substring(a[0].length - 2,12)
         let right = a[1].substring(0,1)
         console.log("left  is now: " + left )
         console.log("right  is now: " + right )
