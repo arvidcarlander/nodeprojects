@@ -14,7 +14,8 @@ var oled
 
 // Temp fix: do not require the oled functions unless on a server that supports them. Otherwise app crashes on load.
 // Should handle gracefully or at least look up self in database
-if (servername == "composepi") {
+console.log("Server name is: " + serverName)
+if (serverName == "composepi") {
 	oled = require("../utils/oled.js")
 
 	router.get('/writeline/:text', function(req, res, next) {
@@ -42,6 +43,9 @@ if (servername == "composepi") {
 			res.send("Stopped oled display autoupdate")
 	})
 
+} else {
+	console.log("Sorry, this server cannot handle oleds")
+	res.send("Sorry, this server cannot handle oleds")
 }
 
 module.exports = router;
