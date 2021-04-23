@@ -18,8 +18,3 @@ wget -O - http://composepi/api/oled/writeline/Rad52055207890%201
 U:12   A:21
 K:12   Ä:21
 
-1. Decimaljustering digitsbeforedot=2 digitsafterdot=0 dot=always/never/auto
-2. clear. Reset blinks
-3. writelines. Testa {}. Testa line1=xxxxy
-4. Replace :. (x,y,oldletter,newletter) used by Blink   :. (x,y,letter)
-5. Font multiplier: ?multiplier=2

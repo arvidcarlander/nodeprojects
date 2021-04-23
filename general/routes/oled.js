@@ -15,17 +15,22 @@ var maxAgeTelldus = 10 * 60
 
 
 router.get('/writeline/:text', function(req, res, next) {
-		
 		oled.writeLine(req.params.text)
 })
 
+router.get('/writelines/:text', function(req, res, next) {
+		oled.writeLines(req.params.text)
+})
+
+router.get('/clear', function(req, res, next) {
+		oledupdater.clear()
+})
+
 router.get('/start', function(req, res, next) {
-		
 		oledupdater.start()
 })
 
 router.get('/stop', function(req, res, next) {
-		
 		oledupdater.stop()
 })
 

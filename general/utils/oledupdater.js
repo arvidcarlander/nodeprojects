@@ -28,6 +28,7 @@ function update () {
 }
 function start () {
 	//oled.writeLines('starting....')
+	lastMinutes = 0 // For immediate update - no wait for interval
 	update()
 	updateTimer = setInterval(update,interval)
 }
