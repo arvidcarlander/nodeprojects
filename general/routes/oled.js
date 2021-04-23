@@ -19,22 +19,27 @@ if (servername == "composepi") {
 
 	router.get('/writeline/:text', function(req, res, next) {
 			oled.writeLine(req.params.text)
+			res.send("Writeline: "+req.params.text)
 	})
 
 	router.get('/writelines/:text', function(req, res, next) {
 			oled.writeLines(req.params.text)
+			res.send("Writelines: "+req.params.text)
 	})
 
 	router.get('/clear', function(req, res, next) {
 			oledupdater.clear()
+			res.send("Cleared oled display")
 	})
 
 	router.get('/start', function(req, res, next) {
 			oledupdater.start()
+			res.send("Started oled display autoupdate")
 	})
 
 	router.get('/stop', function(req, res, next) {
 			oledupdater.stop()
+			res.send("Stopped oled display autoupdate")
 	})
 
 }
