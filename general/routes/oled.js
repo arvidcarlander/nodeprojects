@@ -3,20 +3,19 @@ var express = require('express');
 var router = express.Router();
 var path = require('path')
 var telldus = require("../utils/telldus.js")
-var oledupdater = require("../utils/oledupdater.js")
 var data = require("../data/general.js")
 var serverName = require('os').hostname()
 //var Math = require('Math')
 var debug = false
 // Max age for Telldus info in seconds
 var maxAgeTelldus = 10 * 60 
-var oled 
 
 // Temp fix: do not require the oled functions unless on a server that supports them. Otherwise app crashes on load.
 // Should handle gracefully or at least look up self in database
 console.log("Server name is: " + serverName)
 if (serverName == "ComposePI") {
-	oled = require("../utils/oled.js")
+	var oled = require("../utils/oled.js")
+	var oledupdater = require("../utils/oledupdater.js")
 
 	router.get('/writeline/:text', function(req, res, next) {
 			oled.writeLine(req.params.text)
@@ -45,7 +44,6 @@ if (serverName == "ComposePI") {
 
 } else {
 	console.log("Sorry, this server cannot handle oleds")
-	res.send("Sorry, this server cannot handle oleds")
 }
 
 module.exports = router;
