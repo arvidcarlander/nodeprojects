@@ -92,11 +92,20 @@ router.get('/:fmt/temp/vitavillan', function(req, res, next) {
 
 
 router.get('/:fmt/temp/cpu/:server', function(req,res,next) {
+	console.log("temp/cpu/server my servername is: "+ serverName + " and req.params.server is: " + req.params.server ) 
 	if(req.params.server == serverName ) {
-		getCpu(req, res, next)
+			getCpu(req, res, next)
 		}else{
-			console.log("cpu: can not pass requests yet")
-			res.send("Unable")
+			console.log("cpu: Passing request")
+			let Client = require('node-rest-client').Client
+			let client = new Client()
+			let returnData
+			client.get('http://ComposePI/api/json/temp/cpu/ComposePI',function(data,response) {
+				console.log("ReturnData: ")
+				console.dir(data)
+				res.send(data)
+			})
+
 		}
 })
 
