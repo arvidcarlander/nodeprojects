@@ -1,6 +1,9 @@
 
 TODO:
 
+All loops over devices should be on the client
+Api should provide api/cpu/hostnames or even api/data and the loop around hosts or tempsources should be in the http://xxx.cpus client rather than the api. 
+
 Oledupdate.js
 	Full screen with info
 		   12:34 
@@ -11,14 +14,15 @@ Oledupdate.js
 api index.js
 	Decimaljustering digitsbeforedot=2 digitsafterdot=0 dot=always/never/auto
 app
-	Test:Fix require oled crash. Either:
+	Done :Fix require oled crash. Either:
 		Only require oled if server has oled entries in database
 		Enable oled in os 
 		Handle error. In oled.js, api/oled ?
 	
 Oled.js
-	Test: add clear and writelines
-	writelines. Testa {}. Testa line1=xxxxy
+	Done: add clear and writelines
+	writelines. Testa {}. Testa ?line1=xxxxy
 	New function replace :. (x,y,oldletter,newletter) used by Blink   :. (x,y,letter)
 	clear: Also reset blinks
-	Font multiplier: ?multiplier=2
+	Font multiplier: ?multiplier=2 in writeLine and writeLetter
+	writeLetter ???
