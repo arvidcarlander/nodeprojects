@@ -18,7 +18,8 @@ function update () {
 	seconds =  currentDateTime.getSeconds()
 	seconds =  ('0' + seconds).slice(-2)
 
-	allDays=["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+	//allDays=["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+	allDays=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
 	day =  allDays[currentDateTime.getDay()-1]
 
 	//currentString = hours + ':' + minutes
