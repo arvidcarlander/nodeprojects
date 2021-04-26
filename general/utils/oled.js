@@ -62,4 +62,3 @@ module.exports.writeLines=writeLines
 module.exports.writeLine=writeLine
 module.exports.newLine=newLine
 module.exports.clear=clear
-module.exports.clear=clear
