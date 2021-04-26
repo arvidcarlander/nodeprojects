@@ -91,22 +91,60 @@ router.get('/:fmt/temp/vitavillan', function(req, res, next) {
 
 
 
+let Client, client ,allObjects
 router.get('/:fmt/temp/cpu/:server', function(req,res,next) {
 	console.log("temp/cpu/server my servername is: "+ serverName + " and req.params.server is: " + req.params.server ) 
-	if(req.params.server == serverName ) {
+	switch( req.params.server.toLowerCase()) {
+
+		case "all":
+
+			/*
+			TODO
+				Actually, this should be http api/cpu/hostnames or even api/data and the loop around hosts should be in the http://xxx.cpus client rather than the api. Then this function only returns the local cpu and :server is removed
+					CP on each server needs to return servername. git to composepi and himebridge
+					Change allObjects to object with host name as key
+			*/
+
+			allObjects=[]
+			console.log("all")
+			Client = require('node-rest-client').Client
+			client = new Client()
+			let i,host
+			for( i = 0 ; host = data.sourceData.cpu[i]; i++) {
+				console.log("handling host: " + host)
+				client.get('http://ComposePI/api/json/temp/cpu/ComposePI',function(data,response) {
+					//dataObject=JSON.parse(data)
+					dataObject=data
+					console.log("host in loop: " + host)
+					console.log("dataObject: " )
+					console.dir(dataObject)
+					allObjects.push(dataObject)
+					console.log("allObjects during loop: " )
+					console.dir(allObjects)
+				})
+			}
+			console.log("allObjects at end: " )
+			console.dir(allObjects)
+			res.json(JSON.stringify(allObjects))
+			break;
+		case "raspberrypi":
 			getCpu(req, res, next)
-		}else{
+			break;
+
+		/*
+		case "composepi":
 			console.log("cpu: Passing request")
-			let Client = require('node-rest-client').Client
-			let client = new Client()
-			let returnData
+			Client = require('node-rest-client').Client
+			client = new Client()
 			client.get('http://ComposePI/api/json/temp/cpu/ComposePI',function(data,response) {
 				console.log("ReturnData: ")
 				console.dir(data)
-				res.send(data)
+				res.json(data)
 			})
+			break
+			*/
 
-		}
+	}
 })
 
 
@@ -186,9 +224,9 @@ function getTelldus(id,req,res) {
 
 			let temp = "0"
 			if (  sensorInfo) {
-				allJSON=sensorInfo.data[0]
-				name=sensorInfo.name
-				temp=sensorInfo.data[0].value
+				//allJSON=sensorInfo.data[0]
+				//name=sensorInfo.name
+				//temp=sensorInfo.data[0].value
 			} else {
 				console.log("Error: Telldus returned nothing. Unknown device?")
 				name = "unknown"
