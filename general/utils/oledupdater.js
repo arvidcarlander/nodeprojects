@@ -18,11 +18,16 @@ function update () {
 	seconds =  currentDateTime.getSeconds()
 	seconds =  ('0' + seconds).slice(-2)
 
-	currentString = hours + ':' + minutes
+	allDays=["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+	day =  allDays[currentDateTime.getDay()-1]
+
+	//currentString = hours + ':' + minutes
+	currentStringArray = ["   " + hours + ':' + minutes, day]
 	//currentString = currentString + ':' + seconds
 
 	if( minutes != lastMinutes) {
-		oled.writeLines('   ' + currentString)
+		//oled.writeLines('   ' + currentString)
+		oled.writeLines(currentStringArray)
 		lastMinutes = minutes
 	}
 }

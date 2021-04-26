@@ -4,6 +4,8 @@ TODO:
 All loops over devices should be on the client
 Api should provide api/cpu/hostnames or even api/data and the loop around hosts or tempsources should be in the http://xxx.cpus client rather than the api. 
 
+Add general to homebridge
+
 Oledupdate.js
 	Full screen with info
 		   12:34 
