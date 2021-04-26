@@ -22,8 +22,15 @@ function update () {
 	allDays=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
 	day =  allDays[currentDateTime.getDay()-1]
 
+	date = currentDateTime.getDate()
+	month = currentDateTime.getMonth() + 1
+
 	//currentString = hours + ':' + minutes
-	currentStringArray = ["   " + hours + ':' + minutes, day]
+	currentStringArray = []
+	currentStringArray.push( "   " + hours + ':' + minutes)
+	currentStringArray.push( " " + day + " " + date + "/" + month)
+	currentStringArray.push( "x:xx  y:yy")
+	currentStringArray.push( "x:xx  y:yy")
 	//currentString = currentString + ':' + seconds
 
 	if( minutes != lastMinutes) {
