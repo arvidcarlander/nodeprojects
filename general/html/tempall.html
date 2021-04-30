@@ -43,6 +43,35 @@
 </head>
 <body>
 
+<script>
+		console.log("In TEMPALL")
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			let devices = []
+			let length = 0 
+			if (this.readyState == 4 && this.status == 200) {
+				devices = JSON.parse(this.responseText)
+				console.log("TEMPALL handler...")
+				length =  devices.asArray.length
+				console.log("devices.asArray.length is: " + length )
+				console.dir(devices)
+			}
+			console.log("devices.asArray.length is: " + length )
+			// should check that this is an array
+			for (let i = 0; i < length ; i++) {
+
+				// Add html for the device
+
+				// Populate the device info
+
+				//console.log("tempall iterating over devices, index: " + i)
+				//console.dir(devices.asArray[i])
+			}
+		}
+		xhttp.open("GET","api/data", true)
+		xhttp.send()
+
+</script>
 
 
 	<div class="center">
@@ -84,6 +113,7 @@
 	}
 	function update () {
 
+		/*
 		// Outdoors
 		//document.getElementById("outdoors").innerHTML = "-.-"
 		xhttp = new XMLHttpRequest();
@@ -115,6 +145,7 @@
 		}
 		xhttp.open("GET","api/number/temp/ducklingling", true)
 		xhttp.send()
+		*/
 	}
 
 	function revolution() {

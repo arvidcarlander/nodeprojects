@@ -12,7 +12,6 @@ var maxAgeTelldus = 10 * 60
 
 
 
-// All Telldus items
 // TODO: 
 //	Combine W1 and Telldus based on type in database. Check with db whether the device matches w1 or telldus (or oled?) name or id and call relevant function
 //	Remove /telldus/
@@ -25,6 +24,11 @@ var maxAgeTelldus = 10 * 60
 //	Handle case where telldus is passed non-existing device by device number
 //	Tell cpu how to pass request to another server
 
+router.get('/data/', function(req, res, next) {
+	res.json(data)
+});
+
+// All Telldus items
 router.get('/:fmt/temp/telldus/:item', function(req, res, next) {
 
 	if (data.byName[req.params.item]) {
@@ -91,43 +95,20 @@ router.get('/:fmt/temp/vitavillan', function(req, res, next) {
 
 
 
+// No longer needed
 let Client, client ,allObjects
+
+// Both cpu/ and cpu/nameofmyserver should be handled
+router.get('/:fmt/temp/cpu', function(req,res,next) {
+			getCpu(req, res, next)
+})
 router.get('/:fmt/temp/cpu/:server', function(req,res,next) {
-	console.log("temp/cpu/server my servername is: "+ serverName + " and req.params.server is: " + req.params.server ) 
+	debug &&console.log("temp/cpu/server my servername is: "+ serverName + " and req.params.server is: " + req.params.server ) 
 	switch( req.params.server.toLowerCase()) {
 
-		case "all":
-
-			/*
-			TODO
-				Actually, this should be http api/cpu/hostnames or even api/data and the loop around hosts should be in the http://xxx.cpus client rather than the api. Then this function only returns the local cpu and :server is removed
-					CP on each server needs to return servername. git to composepi and himebridge
-					Change allObjects to object with host name as key
-			*/
-
-			allObjects=[]
-			console.log("all")
-			Client = require('node-rest-client').Client
-			client = new Client()
-			let i,host
-			for( i = 0 ; host = data.sourceData.cpu[i]; i++) {
-				console.log("handling host: " + host)
-				client.get('http://ComposePI/api/json/temp/cpu/ComposePI',function(data,response) {
-					//dataObject=JSON.parse(data)
-					dataObject=data
-					console.log("host in loop: " + host)
-					console.log("dataObject: " )
-					console.dir(dataObject)
-					allObjects.push(dataObject)
-					console.log("allObjects during loop: " )
-					console.dir(allObjects)
-				})
-			}
-			console.log("allObjects at end: " )
-			console.dir(allObjects)
-			res.json(JSON.stringify(allObjects))
-			break;
-		case "raspberrypi":
+		// This server
+		case "":
+		case serverName.toLowerCase():
 			getCpu(req, res, next)
 			break;
 
@@ -143,6 +124,10 @@ router.get('/:fmt/temp/cpu/:server', function(req,res,next) {
 			})
 			break
 			*/
+		default:
+			console.log("cpu request för another server - can not handle that")
+			res.send("Can not handle cpu request för another server. Use /cpu instead ")
+			break;
 
 	}
 })
@@ -191,25 +176,26 @@ function w1temp(strinp) {
 // Take a string and format it to two digits before and one after the .
 
 function setNumberFormat(nr) {
-        console.log("it is now: " + nr)
+        debug &&console.log("setNumberFormat, called with number: " + nr)
         if (  /\-/.test(nr)) {
-                console.log("Dash")
+                debug &&console.log("Dash")
                 return("--.-")
         }
         if ( ! /\./.test(nr)) {
-                console.log("has no .")
+                debug &&console.log("has no .")
                 nr = nr + ".0"
-                console.log("it is now: " + nr)
+                debug &&console.log("Added .0: " + nr)
         }
-        nr = "   " + nr + "000"
-        console.log("it is now: " + nr)
+        nr = "  0" + nr + "000"
+        debug &&console.log("Prefixed spaces and appended 000: xxx" + nr + "xxx")
+        debug &&console.log("Splitting on .")
         let a = nr.split(".")
-        console.log("a0 is now: " + a[0])
-        console.log("a1 is now: " + a[1])
+        debug &&console.log("a0 is now: xxx" + a[0] + "xxx")
+        debug &&console.log("a1 is now: xxx" + a[1] + "xxx")
         let left  = a[0].substring(a[0].length - 2,12)
         let right = a[1].substring(0,1)
-        console.log("left  is now: " + left )
-        console.log("right  is now: " + right )
+        debug &&console.log( "left  is now: xxx" + left  + "xxx" )
+        debug &&console.log("right  is now: xxx" + right + "xxx" )
         return(left + "." + right)
 }
 
@@ -224,9 +210,9 @@ function getTelldus(id,req,res) {
 
 			let temp = "0"
 			if (  sensorInfo) {
-				//allJSON=sensorInfo.data[0]
-				//name=sensorInfo.name
-				//temp=sensorInfo.data[0].value
+				allJSON=sensorInfo.data[0]
+				name=sensorInfo.name
+				temp=sensorInfo.data[0].value
 			} else {
 				console.log("Error: Telldus returned nothing. Unknown device?")
 				name = "unknown"

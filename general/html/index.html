@@ -26,11 +26,11 @@
 <br>
 Hi.
 
-<br> <br> The temperatures are:
+<br> <br> The temperatures are:<tab id=a>
 <br>
-<br>Outdoors: <span id="outdoors">(...retrieving...)</span> <br>
-<br>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
-<br>Duckling Heater: 	<span id="Duckling">(...retrieving...)</span> <br>
+<br><tab to=a>Outdoors: <span id="outdoors">(...retrieving...)</span> <br>
+<br><tab to=a>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
+<br><tab to=a>Chicken Heater: 	<span id="Duckling">(...retrieving...)</span> <br>
 <br><br> <button type="button" onclick="loadAll()">Reload the temperatures</button>
 
 <br><br>This page uses the following REST API which you can access using the format <b>https://servername/api/format/temp/device</b>
@@ -84,6 +84,7 @@ Hi.
 		xhttp.open("GET","api/number/temp/telldus/outdoors", true)
 		xhttp.send()
 
+		// cpu
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -99,7 +100,7 @@ Hi.
 				document.getElementById("Duckling").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/duckling", true)
+		xhttp.open("GET","api/number/temp/ducklingling", true)
 		xhttp.send()
 	}
 

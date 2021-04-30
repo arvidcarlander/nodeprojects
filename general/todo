@@ -2,7 +2,7 @@
 TODO:
 
 All loops over devices should be on the client
-Api should provide api/cpu/hostnames or even api/data and the loop around hosts or tempsources should be in the http://xxx.cpus client rather than the api. 
+Api should provide api/data/cpuhostnames or even api/data and the loop around hosts or tempsources should be in the http://xxx.cpus client rather than the api. 
 
 Add general to homebridge
 
@@ -15,16 +15,15 @@ Oledupdate.js
 	Test: Start: immediate.
 api index.js
 	Decimaljustering digitsbeforedot=2 digitsafterdot=0 dot=always/never/auto
-app
-	Done :Fix require oled crash. Either:
-		Only require oled if server has oled entries in database
-		Enable oled in os 
-		Handle error. In oled.js, api/oled ?
 	
 Oled.js
-	Done: add clear and writelines
+	clear does not work
 	writelines. Testa {}. Testa ?line1=xxxxy
 	New function replace :. (x,y,oldletter,newletter) used by Blink   :. (x,y,letter)
 	clear: Also reset blinks
 	Font multiplier: ?multiplier=2 in writeLine and writeLetter
 	writeLetter ???
+
+
+api.js
+	skriv en function getW1 lik getTelldus
