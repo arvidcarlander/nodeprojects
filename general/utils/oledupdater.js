@@ -1,4 +1,5 @@
 var oled = require('./oled.js')
+var general = require('./general.js')
 
 let debug = false
 let updateTimer 
@@ -6,39 +7,16 @@ let currentDateTime
 let interval = 500
 let lastMinutes = 0
 
+
 function update () {
-	currentDateTime = new Date()
-
-	hours =  currentDateTime.getHours()
-	hours =  ('0' + hours).slice(-2)
-
-	minutes =  currentDateTime.getMinutes()
-	minutes =  ('0' + minutes).slice(-2)
-
-	seconds =  currentDateTime.getSeconds()
-	seconds =  ('0' + seconds).slice(-2)
-
-	//allDays=["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
-	allDays=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
-	day =  allDays[currentDateTime.getDay()-1]
-
-	date = currentDateTime.getDate()
-	month = currentDateTime.getMonth() + 1
-
-	//currentString = hours + ':' + minutes
-	currentStringArray = []
-	currentStringArray.push( "   " + hours + ':' + minutes)
-	currentStringArray.push( " " + day + " " + date + "/" + month)
-	currentStringArray.push( "x:xx  y:yy")
-	currentStringArray.push( "x:xx  y:yy")
-	//currentString = currentString + ':' + seconds
-
+	let screenArray = general.makeScreen()
+	
 	if( minutes != lastMinutes) {
-		//oled.writeLines('   ' + currentString)
-		oled.writeLines(currentStringArray)
+		oled.writeLines(screenArray)
 		lastMinutes = minutes
 	}
 }
+
 function start () {
 	//oled.writeLines('starting....')
 	lastMinutes = 0 // For immediate update - no wait for interval
