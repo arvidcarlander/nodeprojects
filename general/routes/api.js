@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path')
 var telldus = require("../utils/telldus.js")
+var GeneralUtils   = require("../utils/general.js")
 var data = require("../data/general.js")
 var serverName = require('os').hostname()
 //var Math = require('Math')
@@ -24,8 +25,8 @@ var maxAgeTelldus = 10 * 60
 //	Handle case where telldus is passed non-existing device by device number
 //	Tell cpu how to pass request to another server
 
-router.get('/data/', function(req, res, next) {
-	res.json(data)
+router.get('/oled/', function(req, res, next) {
+	res.json(GeneralUtils.makeScreen())
 });
 
 // All Telldus items

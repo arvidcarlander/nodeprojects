@@ -49,6 +49,7 @@
   		        <div class="clock">			<span id="myClock"></span> </div>
 		<br><br><div class="date" >			<span id="myDate"></span> </div>
 		<br><br><div class="temp" >	Utetemp 	<span id="outdoors"></span> </div>
+		<br><br><div class="temp" >	oled	 	<span id="oled"></span> </div>
 	</div>
 
 
@@ -83,6 +84,7 @@
 	function update () {
 
 		updateClock()
+		/updateOled()
 
 		// Outdoors
 		//document.getElementById("outdoors").innerHTML = "-.-"
@@ -96,6 +98,27 @@
 		xhttp.send()
 
 	}
+	/*
+	function updateOled () {
+
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let textArray = JSON.parse(this.responseText)
+				let textHtml = ""
+				for (let i = 0 ;  textArray.length;(i++) ) {
+					text = textArray[1]
+					console.log("In opdateOled. i is: "+i)
+					textHtml = textHtml + "<br>" + textArray[1]
+				}
+				document.getElementById("oled").innerHTML = textHtml
+			}
+		}
+		xhttp.open("GET","api/oled", true)
+		xhttp.send()
+
+	}
+	*/
 
 	function revolution() {
 		if (counter++ === UpdateInterval) {

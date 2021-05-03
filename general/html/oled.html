@@ -46,10 +46,7 @@
 
 
 	<div class="center">
-		<div class="clock">			<span id="myClock"></span> </div>
-		<br><br><div class="date" >			<span id="myDate"></span> </div>
-		<br><br><div class="temp" >	Utetemp 	<span id="outdoors"></span> </div>
-		<div class="temp" >	Kycklingar 	<span id="ducklingling"></span> </div>
+		<br><br><div class="temp" ><span id="oled"></span> </div>
 	</div>
 
 
@@ -83,27 +80,27 @@
 	}
 	function update () {
 
-		// Outdoors
-		//document.getElementById("outdoors").innerHTML = "-.-"
+		updateOled()
+
+	}
+	function updateOled () {
+
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("outdoors").innerHTML = this.responseText
+				let textArray = JSON.parse(this.responseText)
+				let textHtml = ""
+				for (let i = 0 ;  i < textArray.length;(i++) ) {
+					text = textArray[i]
+					//console.log("In opdateOled. i is: "+i)
+					textHtml = textHtml + "<br>" + text
+				}
+				document.getElementById("oled").innerHTML = textHtml
 			}
 		}
-		xhttp.open("GET","api/number/temp/telldus/outdoors", true)
+		xhttp.open("GET","api/oled", true)
 		xhttp.send()
 
-
-		// Chickens
-		xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("ducklingling").innerHTML = this.responseText
-			}
-		}
-		xhttp.open("GET","api/number/temp/ducklingling", true)
-		xhttp.send()
 	}
 
 	function revolution() {
@@ -111,7 +108,7 @@
 			counter=0
 			update()
 		}
-		updateClock()
+		//updateClock()
 		
 	}
 

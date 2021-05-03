@@ -10,7 +10,7 @@ function getTime () {
 	seconds =  ('0' + seconds).slice(-2)
 
 	//allDays=["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
-	allDays=["Sun,"Mon","Tue","Wed","Thu","Fri","Sat"]
+	allDays=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 	day =  allDays[currentDateTime.getDay()]
 
 	date = currentDateTime.getDate()
@@ -36,6 +36,7 @@ function makeScreen () {
 	currentStringArray.push( "x:xx  y:yy")
 	currentStringArray.push( "x:xx  y:yy")
 	//currentString = currentString + ':' + seconds
+	return(currentStringArray)
 }
 module.exports.getTime = getTime
 module.exports.makeScreen = makeScreen

@@ -26,11 +26,11 @@
 <br>
 Hi.
 
-<br> <br> The temperatures are:
+<br> <br> The temperatures are:<tab id=a>
 <br>
-<br>Outdoors: <span id="outdoors">(...retrieving...)</span> <br>
-<br>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
-<br>Duckling Heater: 	<span id="Duckling">(...retrieving...)</span> <br>
+<br><tab to=a>Outdoors: <span id="outdoors">(...retrieving...)</span> <br>
+<br><tab to=a>CPU of this server: <span id="thiscpu">(...retrieving...)</span> <br>
+<br><tab to=a>Chicken Heater: 	<span id="Duckling">(...retrieving...)</span> <br>
 <br><br> <button type="button" onclick="loadAll()">Reload the temperatures</button>
 
 <br><br>This page uses the following REST API which you can access using the format <b>https://servername/api/format/temp/device</b>
@@ -42,15 +42,21 @@ Hi.
 <br> <a href="api/raw/temp/vitavillan "> 	Vita villan  temperatures in raw format</a>
 <br>
 <br> <a href="api/raw/temp/cpu" > 		CPU temp of this server </a>
-<br> <a href="api/number/temp/cpu" > 		CPU temp of this server as a number</a>
-<br> <a href="api/json/temp/cpu" > 		CPU temp of this server in JSON format</a>
 
 <br> <a href="api/raw/temp/ducklingling "> 	Duckling temperature in raw format</a>
 <br> <a href="api/number/temp/ducklingling ">	Duckling temperature as a number</a>
-<br> <a href="api/json/temp/ducklingling ">	Duckling temperature in JSON format</a>
+<br> <a href="api/json/temp/ducklingling ">	Duckling temperature in standardized JSON format</a>
+<br> <a href="api/rawjson/temp/ducklingling "> 	Duckling temperature in original JSON  format</a>
 
 <br> <a href="charttest">			Chart test for Tfv</a>
+<br> <a href="/tempbar">			Temperature barchart</a>
+<br> <a href="/temp">				Temperature overview</a>
 
+<br> <a href="api/number/temp/telldus/:item">	Any telldus device by ID</a>
+<br> <a href="api/number/temp/ducklingling">	Chickens -but by name ducklingling</a>
+<br> <a href="api/number/temp/cpu">		CPU temperature for this server</a>
+
+<br>Or just ".../requestName" will get you any html file matching requestName
 
 <br> Other useful links:
 
@@ -59,6 +65,7 @@ Hi.
 <br> <a href="http://LAPTOP-EOLS2A0V:3000"> LAPTOP-EOLS2A0V:3000 Grafana</a>
 <br> <a href="https://LAPTOP-EOLS2A0V:8443"> LAPTOP-EOLS2A0V:8443 Unifi</a>
 <br> <a href="http://homebridge:81"> homebridge:81 Homebridge</a>
+
 
 <script>
 
@@ -74,9 +81,10 @@ Hi.
 				document.getElementById("outdoors").innerHTML = this.responseText
 			}
 		}
-		xhttp.open("GET","api/number/temp/outdoors", true)
+		xhttp.open("GET","api/number/temp/telldus/outdoors", true)
 		xhttp.send()
 
+		// cpu
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -86,7 +94,6 @@ Hi.
 		xhttp.open("GET","api/number/temp/cpu", true)
 		xhttp.send()
 
-		/*
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -95,7 +102,6 @@ Hi.
 		}
 		xhttp.open("GET","api/number/temp/ducklingling", true)
 		xhttp.send()
-		*/
 	}
 
 	loadAll () 

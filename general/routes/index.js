@@ -15,6 +15,10 @@ var maxAgeTelldus = 10 * 60
 router.get('/', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '../html', 'index.html'));
 });
+/* GET home page. */
+router.get('/temp', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '../html', 'index.html'));
+});
 // For top-level requests, simply try sending an html  file with the same name as the request. Works for http://xxx/ducklings if there is a page htmp/ducklings/html
 router.get('/:requestName', function(req, res, next) {
 
