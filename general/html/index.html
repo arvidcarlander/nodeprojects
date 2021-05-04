@@ -3,12 +3,14 @@
 <head>
     	<meta charset="UTF-8">
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
-    	<title>Sample Site</title>
+    	<title>Utvalda Temperaturer</title>
 
 
     <style>
 	html {
-		width: 100%;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
 	}
         body { 
 		background:black;
@@ -29,15 +31,38 @@
 	}
 	.center {
 		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.clock {
 		font-size: 25vmin;
+		text-align:left;
 	}
 	.date {
 		font-size: 8vmin;
+		colspan="2";
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 	.temp {
 		font-size: 8vmin;
+	}
+	.tempnr {
+		font-size: 8vmin;
+		font-family: monospace;
+	}
+	table {
+		border-spacing: 10px;
+	}
+	tr,td {
+		text-align:left;
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+	td.center {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
 	}
     </style>
 </head>
@@ -46,20 +71,42 @@
 
 
 	<div class="center">
-  		        <div class="clock">			<span id="myClock"></span> </div>
-		<br><br><div class="date" >			<span id="myDate"></span> </div>
-		<br><br><div class="temp" >	Utetemp 	<span id="outdoors"></span> </div>
+	 <table class="center">
+	 <tbody id="tbody">
+			<td>						<span id="fubar"></span> 		</td>
+	   <tr class="clock">
+		        <td class="center" colspan="2">			<span id="myClock"></span> 		</td>
+	   </tr>
+	   <tr class="date">
+			<td class="center" colspan="2">			<span id="myDate"> </span>  		</td>
+	   </tr>
+	   <!--
+	   <tr class="temp">
+			<td>				Utetemp 						</td>
+			<td>						<span id="line1">&nbsp&nbsp&nbsp&nbsp</span> 		</td> 
+	   </tr>
+	   <tr class="temp">
+			<td>				Husvagnshöns						</td>
+			<td>						<span id="line2">&nbsp&nbsp&nbsp&nbsp</span> 		</td>  
+	   </tr>
+	   -->
+	 </tbody>
+	 </table>
 	</div>
 
 
 
 <script>
 	// Things to adjust if required
+
+	var tempItems = ["Utetemp","Husvagnshöns"]
+
 	var UpdateInterval = 20 // Double number of seconds as we tick halfseconds
 
 	// Internal variables
 	var h ; var m ; var s
-	var counter = 0
+	//var counter = 0
+	var counter = UpdateInterval
 	var tick = 500
 
 
@@ -80,20 +127,66 @@
 		document.getElementById('myClock').innerHTML = h+":"+m
 		document.getElementById('myDate').innerHTML = dagar[weekDay ] + " " + day + "/" + (month + 1)
 	}
+	function setItem (lineNumber,dataName) {
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById(lineNumber).innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/telldus/" + dataName, true)
+		xhttp.send()
+	}
+	function resume () {
+		console.log("setting all items to blanks")
+		document.getElementById("1").innerHTML = "&nbsp&nbsp.&nbsp"
+		document.getElementById("2").innerHTML = "&nbsp&nbsp.&nbsp"
+		update()
+	}
+	document.addEventListener("visibilitychange",resume)
+
+	// Lines counts the number of temperature lines 
+	var Lines = 0
+	function addItem (thermometerName) {
+		// New items are placed in the tbody
+		var tbodyObj = document.getElementById("tbody")
+
+		// New table row
+		var trObj = document.createElement("tr")
+		trObj.setAttribute("class","temp")
+
+		// New left cell with thermometer name
+		var td1Obj = document.createElement("td")
+		td1Obj.innerHTML=thermometerName
+
+		// New right cell with thermometer value
+		var td2Obj = document.createElement("td")
+		td2Obj.setAttribute("class","tempnr")
+
+		var spanObj = document.createElement("span")
+		spanObj.id=Lines++
+		spanObj.innerHTML="&nbsp&nbsp&nbsp&nbsp"
+
+		// Add new row to the table
+		tbodyObj.appendChild(trObj)
+
+		// Add new cells to the row
+		trObj.appendChild(td1Obj)
+		trObj.appendChild(td2Obj)
+		
+		// Add new span to the second cell
+		td2Obj.appendChild(spanObj)
+		
+	}
 	function update () {
 
 		updateClock()
 
-		// Outdoors
-		//document.getElementById("outdoors").innerHTML = "-.-"
-		xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("outdoors").innerHTML = this.responseText
-			}
+		for (let i=0 ; i < Lines ; i++) {
+			console.log("update iteration " + i)
+			//setItem(i,"Utetemp")
+			setItem(i,tempItems[i])
 		}
-		xhttp.open("GET","api/number/temp/telldus/outdoors", true)
-		xhttp.send()
 
 	}
 
@@ -106,13 +199,15 @@
 		
 	}
 
-	revolution () 
 
 	
 	window.onload = function() {
+		for (let i=0 ; i < tempItems.length;i++) {
+			addItem(tempItems[i])
+		}
 		setInterval( function() { revolution() }, tick)
 		revolution()
-		update()
+		//update()
 	}
 
 

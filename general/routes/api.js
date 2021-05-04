@@ -187,7 +187,9 @@ function setNumberFormat(nr) {
                 nr = nr + ".0"
                 debug &&console.log("Added .0: " + nr)
         }
-        nr = "  0" + nr + "000"
+        //nr = "  0" + nr + "000"
+	// Unsure if space works as the two digit prefix - perhaps eaten by html?
+        nr = "   " + nr + "000"
         debug &&console.log("Prefixed spaces and appended 000: xxx" + nr + "xxx")
         debug &&console.log("Splitting on .")
         let a = nr.split(".")

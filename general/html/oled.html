@@ -38,6 +38,7 @@
 	}
 	.temp {
 		font-size: 8vmin;
+		font-family: monospace;
 	}
     </style>
 </head>
@@ -62,26 +63,8 @@
 
 
 
-	function updateClock () {
-		var dagar = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag" ]
-		var today = new Date()
-		h = today.getHours()
-		m = today.getMinutes()
-		s = today.getSeconds()
-		month	= today.getMonth()
-		day	= today.getDate()
-		weekDay	= today.getDay()
-		h = (h < 10) ? "0"+ h : h
-		m = (m < 10) ? "0"+ m : m
-		s = (s < 10) ? "0"+ s : s
-		//document.getElementById('myClock').innerHTML = h+":"+m+":"+s
-		document.getElementById('myClock').innerHTML = h+":"+m
-		document.getElementById('myDate').innerHTML = dagar[weekDay ] + " " + day + "/" + (month + 1)
-	}
 	function update () {
-
 		updateOled()
-
 	}
 	function updateOled () {
 

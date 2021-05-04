@@ -2,6 +2,8 @@
 function getTime () {
 	currentDateTime = new Date()
 
+	// Make sure these are local
+	let hours, minutes, seconds, allDays, day, date, month
 	hours =  currentDateTime.getHours()
 	hours =  ('0' + hours).slice(-2)
 	minutes =  currentDateTime.getMinutes()
@@ -21,21 +23,24 @@ function getTime () {
 		minutes: minutes,
 		seconds: seconds,
 		allDays: allDays,
-		day: day
+		day: day,
+		date: date,
+		month: month
 	})
 
 
 }
 
 function makeScreen () {
+	console.log("In makeScreen")
 	let time = getTime()
-	//currentString = hours + ':' + minutes
 	currentStringArray = []
-	currentStringArray.push( "   " + hours + ':' + minutes)
-	currentStringArray.push( " " + day + " " + date + "/" + month)
-	currentStringArray.push( "x:xx  y:yy")
-	currentStringArray.push( "x:xx  y:yy")
-	//currentString = currentString + ':' + seconds
+	currentStringArray.push( "   " + time.hours + ':' + time.minutes)
+	currentStringArray.push( " " + time.day + " " + time.date + "/" + time.month)
+
+	currentStringArray.push( "a:Bx  W:WW")
+	currentStringArray.push( "x:xC  y:yy")
+	//currentString = currentString + ':' + time.seconds
 	return(currentStringArray)
 }
 module.exports.getTime = getTime

@@ -1,9 +1,9 @@
 {
   "telldus": {
 	"A5": {
-		"outdoors": 	{				"device":	"1540043414" },
-		"ducklings": 	{				"device":	"1540845504" },
-		"ducks": 	{				"device":	"1540043189" }
+		"Utetemp": 		{				"device":	"1540043414" },
+		"ducklings": 		{				"device":	"1540845504" },
+		"Husvagnshöns": 	{				"device":	"1540043189" }
 	}
   },
   "w1": {
