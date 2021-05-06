@@ -17,7 +17,7 @@
 		"sovBV": 	{ "label":	"11b",		"device":	"28-0301a279be75" }
 	},
 	"raspberrypi": {
-		"kycklingar": 	{ 				"device":	"28-0301a279df82" }
+		"tegelkontor": 	{ 				"device":	"28-0301a279df82" }
 	}
   },
   "cpu": [

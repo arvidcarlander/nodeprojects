@@ -6,13 +6,16 @@ Api should provide api/data/cpuhostnames or even api/data and the loop around ho
 
 Add general to homebridge
 
+Fixa datafilen och dess js: g�r konstiga saker
+Kommentera case sensitive
+
 Oledupdate.js
 	Full screen with info
 		   12:34 
-		 Mån 12/12
-		U:12   A:21
-		K:12   Ä:21
-	Test: Start: immediate.
+		 Mon  12/12
+		U:12   K:06
+		 :      :  
+
 api index.js
 	Decimaljustering digitsbeforedot=2 digitsafterdot=0 dot=always/never/auto
 	
@@ -27,3 +30,6 @@ Oled.js
 
 api.js
 	skriv en function getW1 lik getTelldus
+	ta bort /telldus
+	switcha format/temp till temp/format
+
