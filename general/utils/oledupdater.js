@@ -32,10 +32,15 @@ function stop () {
 		oled.writeLines('already....')
 	}
 }
+function clear () {
+	stop()
+	oled.clear()
+}
 
 module.exports.update=update		// For testing only
 module.exports.start=start
 module.exports.stop=stop
+module.exports.clear=clear
 
 start()
 

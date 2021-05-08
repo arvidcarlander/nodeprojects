@@ -19,6 +19,20 @@ let y=0
 
 oled.writeString(font,2,'    ready',1,true)
 
+function dimDisplay () {
+	oled.dimDisplay()
+}
+function turnOffDisplay () {
+	oled.turnOffDisplay()
+}
+function turnOnDisplay () {
+	oled.turnOnDisplay()
+}
+function invertDisplay () {
+	oled.invertDisplay()()
+}
+
+
 function clear () {
 	x=0
 	y=0
@@ -62,3 +76,7 @@ module.exports.writeLines=writeLines
 module.exports.writeLine=writeLine
 module.exports.newLine=newLine
 module.exports.clear=clear
+module.exports.dimDisplay=dimDisplay
+module.exports.turnOffDisplay=turnOffDisplay
+module.exports.turnOnDisplay=turnOnDisplay
+module.exports.invertDisplay=invertDisplay

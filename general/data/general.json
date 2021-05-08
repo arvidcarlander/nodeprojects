@@ -2,7 +2,6 @@
   "telldus": {
 	"A5": {
 		"Utetemp": 		{				"device":	"1540043414" },
-		"ducklings": 		{				"device":	"1540845504" },
 		"Husvagnshöns": 	{				"device":	"1540043189" }
 	}
   },
@@ -17,7 +16,7 @@
 		"sovBV": 	{ "label":	"11b",		"device":	"28-0301a279be75" }
 	},
 	"raspberrypi": {
-		"tegelkontor": 	{ 				"device":	"28-0301a279df82" }
+		"tegelkontoret": { 				"device":	"28-0301a279df82" }
 	}
   },
   "cpu": [

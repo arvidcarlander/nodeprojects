@@ -9,7 +9,7 @@ var serverName = require('os').hostname()
 //var Math = require('Math')
 var debug = false
 // Max age for Telldus info in seconds
-var maxAgeTelldus = 10 * 60 
+var maxAgeTelldus = 30 * 60 
 
 
 
@@ -43,8 +43,18 @@ router.get('/:fmt/temp/telldus/:item', function(req, res, next) {
 				
 });
 
-router.get('/:fmt/temp/ducklingling', function(req, res, next) {
-	exec( 'cat /sys/bus/w1/devices/28-0301a279df82/w1_slave'
+router.get('/:fmt/temp/:item', function(req, res, next) {
+
+	if (data.byName[req.params.item]) {
+		deviceNumber = data.byName[req.params.item].device
+		deviceName = data.byName[req.params.item].name
+	}else{
+		// If item not recognized, hope that item is a number and pass it along
+		//deviceNumber =  req.params.item
+		deviceNumber="fubar"
+	}
+
+	exec( 'cat /sys/bus/w1/devices/' + deviceNumber + '/w1_slave'
 		,(error,stdout,stderr) => {
 		if (error) {
 			res.send("Error: "+error)
@@ -58,7 +68,7 @@ router.get('/:fmt/temp/ducklingling', function(req, res, next) {
 				res.send(t)
 				break
 			case "json":
-				res.json( { "name" : "Miniällingar", "temp" : t})
+				res.json( { "name" : deviceName , "temp" : t})
 				break
 			default:
 				res.send("Unknown format")

@@ -3,7 +3,13 @@
 <head>
     	<meta charset="UTF-8">
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
-	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<!--
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/Chart.js"></script>
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/Chart.js"></script>
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></scripts
+	-->
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.js"></script>
+
 	     <script>
 	     if (!window.Chart) document.write('Could not load chart.min.js');
         	console.dir(window)
@@ -63,10 +69,9 @@
 
 
 	function updateChart1() {
-		getData("api/json/temp/ducklingling")		// Ällingling
-		getData("api/json/temp/Telldus/1540043414") 	// ute
-		getData("api/json/temp/Telldus/1540043189") 	// Ankor
-		getData("api/json/temp/Telldus/1540845504") 	// Ällingar
+		getData("api/json/temp/Telldus/Utetemp") 
+		getData("api/json/temp/Telldus/Husvagnshöns")
+		getData("api/json/temp/tegelkontoret")
 	}
 	function addData(label,value) {
 		thisChart.data.labels.push(label)
@@ -77,23 +82,19 @@
 	function getData(apiurl) {
 		// Outdoors
 		debug && console.log("getData starts")
-		outdoorsDataRequest = new XMLHttpRequest();
-		outdoorsDataRequest.onreadystatechange = function() {
+		dataRequest = new XMLHttpRequest();
+		dataRequest.onreadystatechange = function() {
 			debug && console.log("In getData onreadystatechange handler")
 			if (this.readyState == 4 && this.status == 200) {
-				//console.log("getData got from api: ")
-				debug && console.dir(this.responseText)
 				var JSONdata = JSON.parse(this.responseText)
-				//console.dir(JSONdata)
-				//console.dir("Name is " + JSONdata.name + " Temp is " + JSONdata.temp)
 				addData(JSONdata.name,JSONdata.temp)
 			} else {
-				//console.log("Error or data not ready from API")
+				console.log("Error or data not ready from API")
 			}
 			//console.dir(this)
 		}
-		outdoorsDataRequest.open("GET",apiurl, true)
-		outdoorsDataRequest.send()
+		dataRequest.open("GET",apiurl, true)
+		dataRequest.send()
 	}
 
 
