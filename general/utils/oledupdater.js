@@ -10,15 +10,10 @@ let lastMinutes = 0
 
 function update () {
 	let screenArray = general.makeScreen()
-	
-	if( minutes != lastMinutes) {
-		oled.writeLines(screenArray)
-		lastMinutes = minutes
-	}
+	oled.writeLines(screenArray)
 }
 
 function start () {
-	//oled.writeLines('starting....')
 	lastMinutes = 0 // For immediate update - no wait for interval
 	update()
 	updateTimer = setInterval(update,interval)
