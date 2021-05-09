@@ -32,7 +32,7 @@ function getTime () {
 }
 
 function makeScreen () {
-	console.log("In makeScreen")
+	//console.log("In makeScreen")
 	let time = getTime()
 	currentStringArray = []
 	currentStringArray.push( "   " + time.hours + ':' + time.minutes)

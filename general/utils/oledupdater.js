@@ -4,8 +4,7 @@ var general = require('./general.js')
 let debug = false
 let updateTimer 
 let currentDateTime
-let interval = 500
-let lastMinutes = 0
+let interval = 30 * 1000
 
 
 function update () {
@@ -14,7 +13,6 @@ function update () {
 }
 
 function start () {
-	lastMinutes = 0 // For immediate update - no wait for interval
 	update()
 	updateTimer = setInterval(update,interval)
 }
