@@ -222,18 +222,19 @@ function getTelldus(id,req,res) {
 			debug && console.dir(sensorInfo)
 
 			let temp = "0"
-			if (  sensorInfo) {
+			if (  sensorInfo && sensorInfo.data && sensorInfo.data[0]) {
 				allJSON=sensorInfo.data[0]
 				name=sensorInfo.name
 				temp=sensorInfo.data[0].value
+
+				if(sensorInfo.data[0].name != "temp") {
+					console.log("Error: Telldus returned no temp. Humidity?")
+					temp = "0"
+					name = "unknown"
+					allJSON={}
+				}
 			} else {
 				console.log("Error: Telldus returned nothing. Unknown device?")
-				name = "unknown"
-				allJSON={}
-			}
-			if(sensorInfo.data[0].name != "temp") {
-				console.log("Error: Telldus returned no temp. Humidity?")
-				temp = "0"
 				name = "unknown"
 				allJSON={}
 			}

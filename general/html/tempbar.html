@@ -75,13 +75,15 @@
 	}
 	function addData(label,value) {
 		thisChart.data.labels.push(label)
+		console.log(thisChart.data.labels.length)
 		thisChart.data.datasets[0].data.push(value)
 		thisChart.update()
 	}
 
 	function getData(apiurl) {
 		// Outdoors
-		debug && console.log("getData starts")
+		debug = true
+		debug && console.log("getData starts. apiurl is: " + apiurl)
 		dataRequest = new XMLHttpRequest();
 		dataRequest.onreadystatechange = function() {
 			debug && console.log("In getData onreadystatechange handler")
@@ -89,12 +91,13 @@
 				var JSONdata = JSON.parse(this.responseText)
 				addData(JSONdata.name,JSONdata.temp)
 			} else {
-				console.log("Error or data not ready from API")
+				console.log("Not ready in readystatechange")
 			}
 			//console.dir(this)
 		}
 		dataRequest.open("GET",apiurl, true)
 		dataRequest.send()
+		debug = false
 	}
 
 

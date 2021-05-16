@@ -30,16 +30,26 @@ function getTime () {
 
 
 }
+function getTelldus(){
+	let out = "2.3"
+	let hens = "12.3"
+	return({
+		"out": out,
+		"hens": hens
+	})
+}
 
 function makeScreen () {
 	//console.log("In makeScreen")
 	let time = getTime()
+	let telldus = getTelldus()
 	currentStringArray = []
 	currentStringArray.push( "   " + time.hours + ':' + time.minutes)
 	currentStringArray.push( " " + time.day + " " + time.date + "/" + time.month)
 
-	currentStringArray.push( "a:Bx  W:WW")
-	currentStringArray.push( "x:xC  y:yy")
+	currentStringArray.push( "  O:" + telldus.out + " H:" + telldus.hens )
+
+	currentStringArray.push( "x:xx  y:yy")
 	//currentString = currentString + ':' + time.seconds
 	return(currentStringArray)
 }
