@@ -15,7 +15,7 @@ var maxAgeTelldus = 10 * 60
 router.get('/', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '../html', 'index.html'));
 });
-/* GET home page. */
+/* GET temp page. */
 router.get('/temp', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '../html', 'index.html'));
 });

@@ -8,8 +8,6 @@ var data = require("../data/general.js")
 var serverName = require('os').hostname()
 //var Math = require('Math')
 var debug = false
-// Max age for Telldus info in seconds
-var maxAgeTelldus = 30 * 60 
 
 
 
@@ -20,10 +18,7 @@ var maxAgeTelldus = 30 * 60
 //	Provide reasonable errors to client if Telldus, W1, or OLED does not respond
 //	Teach clients to handle those errors
 //	Add timestamp to standard format JSON
-//	DONE Standardize temp number to one decimal
-//	DONE Check age on Telldus stuff. Return 0.0 if older than 5 mins
 //	Handle case where telldus is passed non-existing device by device number
-//	Tell cpu how to pass request to another server
 
 router.get('/oled/', function(req, res, next) {
 	res.json(GeneralUtils.makeScreen())
@@ -39,7 +34,7 @@ router.get('/:fmt/temp/telldus/:item', function(req, res, next) {
 		deviceNumber =  req.params.item
 	}
 
-	getTelldus( deviceNumber,req,res)
+	telldus.getTelldus( deviceNumber,req,res)
 				
 });
 
@@ -184,103 +179,8 @@ function w1temp(strinp) {
 }
 
 
-// Take a string and format it to two digits before and one after the .
-
-function setNumberFormat(nr) {
-        debug &&console.log("setNumberFormat, called with number: " + nr)
-        if (  /\-/.test(nr)) {
-                debug &&console.log("Dash")
-                return("--.-")
-        }
-        if ( ! /\./.test(nr)) {
-                debug &&console.log("has no .")
-                nr = nr + ".0"
-                debug &&console.log("Added .0: " + nr)
-        }
-        //nr = "  0" + nr + "000"
-	// Unsure if space works as the two digit prefix - perhaps eaten by html?
-        nr = "   " + nr + "000"
-        debug &&console.log("Prefixed spaces and appended 000: xxx" + nr + "xxx")
-        debug &&console.log("Splitting on .")
-        let a = nr.split(".")
-        debug &&console.log("a0 is now: xxx" + a[0] + "xxx")
-        debug &&console.log("a1 is now: xxx" + a[1] + "xxx")
-        let left  = a[0].substring(a[0].length - 2,12)
-        let right = a[1].substring(0,1)
-        debug &&console.log( "left  is now: xxx" + left  + "xxx" )
-        debug &&console.log("right  is now: xxx" + right + "xxx" )
-        return(left + "." + right)
-}
 
 
-function getTelldus(id,req,res) {
-	const fubar = telldus.api.getSensorInfo(id)
-		.then(sensorInfo => {
-			//sensorInfo.JSON = JSON.parse(sensorInfo)
-			//res.send(sensorInfo.JSON.id)
-			//res.send(sensorInfo.data[0].value)
-			debug && console.dir(sensorInfo)
-
-			let temp = "0"
-			if (  sensorInfo && sensorInfo.data && sensorInfo.data[0]) {
-				allJSON=sensorInfo.data[0]
-				name=sensorInfo.name
-				temp=sensorInfo.data[0].value
-
-				if(sensorInfo.data[0].name != "temp") {
-					console.log("Error: Telldus returned no temp. Humidity?")
-					temp = "0"
-					name = "unknown"
-					allJSON={}
-				}
-			} else {
-				console.log("Error: Telldus returned nothing. Unknown device?")
-				name = "unknown"
-				allJSON={}
-			}
-
-			let now = new Date()
-			let nowTimeStamp = now.getTime() / 1000
-			let telldusLastUpdated =  parseFloat(sensorInfo.lastUpdated) 
-			let ageSeconds = nowTimeStamp - telldusLastUpdated
-			if(ageSeconds >= maxAgeTelldus) {
-				debug && console.log("Too old: age is: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" + ageSeconds)
-				debug && console.log("NowTimestamp is: " + nowTimeStamp)
-				debug && console.log("telldusLastUpdated is: " + telldusLastUpdated)
-				debug && console.log("Age in seconds is: " + ageSeconds)
-				debug && console.log("MaxAgeTelldus is: " + maxAgeTelldus)
-				temp = "-"
-				allJSON.value="-"
-			}else{
-				debug && console.log("Not too old: age is: " + ageSeconds)
-			}
-
-
-
-			temp=setNumberFormat(temp)
-
-			switch (req.params.fmt) {
-				case "raw":
-					res.send(temp)
-					break
-				case "number":
-					res.send(temp)
-					break
-				case "json":
-					// Standard format
-					res.json( { "name" : name, "temp" : temp})
-					break
-				case "rawjson":
-					// Return the unadulterated JSON
-					res.json(allJSON)
-					//console.dir(allJSON)
-					break
-				default:
-					res.send("Unknown format in API request")
-			
-			}
-		})
-}
 
 
 module.exports = router;

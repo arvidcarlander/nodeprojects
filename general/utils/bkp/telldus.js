@@ -14,34 +14,12 @@ const api = new LiveApi({
   tokenSecret: '9dfdc7e45ea6a59bb97af8caecb5222f', // tokensecret
 });
 
-/*
-const promise1 = new Promise ((resolve,reject) => {
- 
-	console.log("Calling Telldus")
-	const fubar = telldus.api.getSensorInfo("1540043414")
-		.then(sensorInfo => resolve(sensorInfo)
-		)
-
-})
-
-async function xxx () {
-	const d = await Promise.all([promise1])
-
-	console.log("+++++++++++++++++++++++ d[0] is: ")
-	console.dir( d[0])
-	console.log("+++++++++++++++++++++++ end d[0]")
-}
-
-xxx()
-*/
-
 function getTelldus(id,req,res) {
 	const fubar = telldus.api.getSensorInfo(id)
 		.then(sensorInfo => {
 			//sensorInfo.JSON = JSON.parse(sensorInfo)
 			//res.send(sensorInfo.JSON.id)
 			//res.send(sensorInfo.data[0].value)
-			debug = false
 			debug && console.dir(sensorInfo)
 
 			let temp = "0"

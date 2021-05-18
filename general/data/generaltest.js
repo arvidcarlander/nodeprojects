@@ -11,3 +11,5 @@ console.dir(general.byName.Kycklingar)
 
 console.log("general.asArray[0]: ")
 console.dir(general.asArray[0])
+console.log("general.asArray: ")
+console.dir(general.asArray)

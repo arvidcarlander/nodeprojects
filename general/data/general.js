@@ -27,6 +27,9 @@ var byHost = {}
 for (const type in sourceData) {
 	for (const host in sourceData[type]) {
 		debug && console.log(`host is: ${host}`)
+		if ( ! byHost[host]) {
+			byHost[host]={}
+		}
 		for (const name in sourceData[type][host]) {
 			debug && console.log(`name is: ${name}`)
 			//console.log(byName[sourceData[type][host][name].device)
@@ -41,7 +44,7 @@ for (const type in sourceData) {
 			}
 			asArray.push(newObject)
 			byName[name]=newObject
-			byHost[host]=newObject
+			byHost[host][name]=(newObject)
 		}
 	}
 }

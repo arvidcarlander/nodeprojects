@@ -19,8 +19,13 @@
 		"tegelkontoret": { 				"device":	"28-0301a279df82" }
 	}
   },
-  "cpu": [
-	"homebridge",
-	"raspberrypi"
-  ]
+  "cpu": {
+	"homebridge": {
+		"homebridge": 		{}
+	},
+	"raspberrypi": {
+		"raspberrypi": 		{}
+	}
+  
+  }
 }
