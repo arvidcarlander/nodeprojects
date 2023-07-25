@@ -2,7 +2,10 @@
     "name": "home",
     "description": "A Node-RED Project",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-contrib-influxdb": "0.6.1",
+        "node-red-dashboard": "3.2.0"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flows.json",
