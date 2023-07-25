@@ -1488,7 +1488,7 @@
         "id": "1630ddb7.bf2b42",
         "type": "http request",
         "z": "b403ca2c.e569c8",
-        "name": "AA",
+        "name": "AAA",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
