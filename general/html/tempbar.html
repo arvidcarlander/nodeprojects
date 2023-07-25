@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    	<meta charset="UTF-8">
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+	<!--
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/Chart.js"></script>
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/Chart.js"></script>
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></scripts
+	-->
+	<script type"text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.js"></script>
+
+	     <script>
+	     if (!window.Chart) document.write('Could not load chart.min.js');
+        	console.dir(window)
+	     </script>
+
+
+
+    	<title>Temperature Barchart</title>
+
+<style>
+        body { 
+		padding-top:50px; 
+		background-color: rgb(255,255,255);
+	}
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+		background-color: rgb(255,255,255);
+	}
+	#chart1 {
+		border-width: 1px;
+		border-style: solid;
+		border-color: Black;
+	}
+	.chart-container {
+		position: relative;
+    		width: 90vw;
+    		height: 90vh;
+	}
+
+</style>
+
+
+</head>
+<body>
+
+
+<div class="chart-container">
+	<canvas id="chart1" ></canvas>
+</div>
+
+
+
+<script>
+
+
+	let debug = false
+
+
+
+	function updateChart1() {
+		getData("api/json/temp/Telldus/Utetemp") 
+		getData("api/json/temp/Telldus/Husvagnshöns")
+		getData("api/json/temp/tegelkontoret")
+	}
+	function addData(label,value) {
+		thisChart.data.labels.push(label)
+		console.log(thisChart.data.labels.length)
+		thisChart.data.datasets[0].data.push(value)
+		thisChart.update()
+	}
+
+	function getData(apiurl) {
+		// Outdoors
+		debug && console.log("getData starts. apiurl is: " + apiurl)
+		dataRequest = new XMLHttpRequest();
+		dataRequest.onreadystatechange = function() {
+			debug && console.log("In getData onreadystatechange handler")
+			if (this.readyState == 4 && this.status == 200) {
+				var JSONdata = JSON.parse(this.responseText)
+				addData(JSONdata.name,JSONdata.temp)
+			} else {
+				console.log("Not ready in readystatechange")
+			}
+			//console.dir(this)
+		}
+		dataRequest.open("GET",apiurl, true)
+		dataRequest.send()
+		debug = false
+	}
+
+
+
+
+
+	
+	var inputData 
+	var chart1Data
+	var thisChart
+
+	function drawChart1(data) {
+	
+
+		var ctx = document.getElementById("chart1").getContext('2d') 
+		thisChart =  new Chart(ctx, {
+		//window.bar1 = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				//labels	: ["Tegel","Ute"],
+				labels	: [],
+				datasets: [ {
+					//label: 'Dataset 1',
+					  backgroundColor: [
+					      'rgba(255, 099, 132, 0.50)',
+					      'rgba(255, 159, 064, 0.50)',
+					      'rgba(255, 205, 086, 0.50)',
+					      'rgba(075, 192, 192, 0.50)',
+					      'rgba(054, 162, 235, 0.50)',
+					      'rgba(153, 102, 255, 0.50)',
+					      'rgba(201, 203, 207, 0.50)',
+					      'rgba(255, 099, 132, 0.50)',
+					      'rgba(255, 159, 064, 0.50)',
+					      'rgba(255, 205, 086, 0.50)',
+					      'rgba(075, 192, 192, 0.50)',
+					      'rgba(054, 162, 235, 0.50)',
+					      'rgba(153, 102, 255, 0.50)',
+					      'rgba(201, 203, 207, 0.50)'
+					    ],
+
+					borderColor: [
+					      'rgba(255, 099, 132)',
+					      'rgba(255, 159, 064)',
+					      'rgba(255, 205, 086)',
+					      'rgba(075, 192, 192)',
+					      'rgba(054, 162, 235)',
+					      'rgba(153, 102, 255)',
+					      'rgba(201, 203, 207)',
+					      'rgba(255, 099, 132)',
+					      'rgba(255, 159, 064)',
+					      'rgba(255, 205, 086)',
+					      'rgba(075, 192, 192)',
+					      'rgba(054, 162, 235)',
+					      'rgba(153, 102, 255)',
+					      'rgba(201, 203, 207)'
+					],
+					borderWidth:1,
+					data: []
+				  } ]
+			},
+			options: {
+				responsive: true,
+				scales : {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true}
+					}]
+				},
+				legend: {
+					position: 'top',
+					display: false,
+				},
+				tooltips: {
+					callbacks: {
+						label: function(toolTipItem)  {
+							return toolTipItem.yLabel
+						}
+					}
+				},
+				title: {
+					display: true,
+					//text: "Temperaturer"
+				}
+			}
+		})
+	}
+	updateChart1()
+
+	window.onload = drawChart1()
+
+
+</script>
+</body>
+</html>
+

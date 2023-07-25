@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    	<meta charset="UTF-8">
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    	<title>Utvalda Temperaturer</title>
+
+
+    <style>
+	html {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+        body { 
+		background:black;
+		padding-top:50px;
+		color:white;
+		width: 100%;
+		overflow: hidden;
+	}
+	#myChart {
+		border-width: 1px;
+		border-style: solid;
+		border-color: Black;
+	}
+	.chart-container {
+		position: relative;
+    		width: 90vw;
+    		height: 90vh;
+	}
+	.center {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.clock {
+		font-size: 25vmin;
+		text-align:left;
+	}
+	.date {
+		font-size: 8vmin;
+		colspan="2";
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.temp {
+		font-size: 8vmin;
+	}
+	.tempnr {
+		font-size: 8vmin;
+		font-family: monospace;
+	}
+	table {
+		border-spacing: 10px;
+	}
+	tr,td {
+		text-align:left;
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+	td.center {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	black {
+		color: red;
+	}
+    </style>
+</head>
+<body>
+
+
+
+	<div class="center">
+	 <table class="center">
+	 <tbody id="tbody">
+			<td>						<span id="fubar"></span> 		</td>
+	   <tr class="clock">
+		        <td class="center" colspan="2">			<span id="myClock"></span> 		</td>
+	   </tr>
+	   <tr class="date">
+			<td class="center" colspan="2">			<span id="myDate"> </span>  		</td>
+	   </tr>
+	   <!--
+	   <tr class="temp">
+			<td>				Utetemp 						</td>
+			<td>						<span id="line1">&nbsp&nbsp&nbsp&nbsp</span> 		</td> 
+	   </tr>
+	   <tr class="temp">
+			<td>				Husvagnshöns						</td>
+			<td>						<span id="line2">&nbsp&nbsp&nbsp&nbsp</span> 		</td>  
+	   </tr>
+	   -->
+	 </tbody>
+	 </table>
+	</div>
+
+
+
+<script>
+	// Things to adjust if required
+
+	var tempItems = ["Utetemp","Husvagnshöns"]
+
+	var UpdateInterval = 20 // Double number of seconds as we tick halfseconds
+
+	// Internal variables
+	var h ; var m ; var s
+	//var counter = 0
+	var counter = UpdateInterval
+	var tick = 500
+
+
+
+	var clockToggle = 0
+	function updateClock () {
+		var dagar = ["Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag" ]
+		var today = new Date()
+		h = today.getHours()
+		m = today.getMinutes()
+		s = today.getSeconds()
+		month	= today.getMonth()
+		day	= today.getDate()
+		weekDay	= today.getDay()
+		h = (h < 10) ? "0"+ h : h
+		m = (m < 10) ? "0"+ m : m
+		s = (s < 10) ? "0"+ s : s
+		//document.getElementById('myClock').innerHTML = h+":"+m+":"+s
+		var colon=":"
+		if (false & clockToggle++ % 1) {
+			colon = "&nbsp"
+		}
+
+		document.getElementById('myClock').innerHTML = h+colon+m
+		document.getElementById('myDate').innerHTML = dagar[weekDay ] + " " + day + "/" + (month + 1)
+	}
+	function setItem (lineNumber,dataName) {
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById(lineNumber).innerHTML = this.responseText
+			}
+		}
+		xhttp.open("GET","api/number/temp/telldus/" + dataName, true)
+		xhttp.send()
+	}
+	function resume () {
+		console.log("setting all items to blanks")
+
+		for (let i=0 ; i < Lines ; i++) {
+			document.getElementById(i).innerHTML = "&nbsp&nbsp.&nbsp"
+		}
+		//document.getElementById("1").innerHTML = "&nbsp&nbsp.&nbsp"
+		//document.getElementById("2").innerHTML = "&nbsp&nbsp.&nbsp"
+
+		update()
+	}
+	document.addEventListener("visibilitychange",resume)
+
+	// Lines counts the number of temperature lines 
+	var Lines = 0
+	function addItem (thermometerName) {
+		// New items are placed in the tbody
+		var tbodyObj = document.getElementById("tbody")
+
+		// New table row
+		var trObj = document.createElement("tr")
+		trObj.setAttribute("class","temp")
+
+		// New left cell with thermometer name
+		var td1Obj = document.createElement("td")
+		td1Obj.innerHTML=thermometerName
+
+		// New right cell with thermometer value
+		var td2Obj = document.createElement("td")
+		td2Obj.setAttribute("class","tempnr")
+
+		var spanObj = document.createElement("span")
+		spanObj.id=Lines++
+		spanObj.innerHTML="&nbsp&nbsp&nbsp&nbsp"
+		//spanObj.innerHTML="<span = black>&nbsp&nbsp.&nbsp</span>"
+
+		// Add new row to the table
+		tbodyObj.appendChild(trObj)
+
+		// Add new cells to the row
+		trObj.appendChild(td1Obj)
+		trObj.appendChild(td2Obj)
+		
+		// Add new span to the second cell
+		td2Obj.appendChild(spanObj)
+		
+	}
+	function update () {
+
+		updateClock()
+
+		for (let i=0 ; i < Lines ; i++) {
+			console.log("update iteration " + i)
+			//setItem(i,"Utetemp")
+			setItem(i,tempItems[i])
+		}
+
+	}
+
+	function revolution() {
+		if (counter++ === UpdateInterval) {
+			counter=0
+			update()
+		}
+		updateClock()
+		
+	}
+
+
+	
+	window.onload = function() {
+		for (let i=0 ; i < tempItems.length;i++) {
+			addItem(tempItems[i])
+		}
+		setInterval( function() { revolution() }, tick)
+		revolution()
+		//update()
+	}
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

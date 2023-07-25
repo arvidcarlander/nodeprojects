@@ -1,0 +1,35 @@
+
+TODO:
+
+All loops over devices should be on the client
+Api should provide api/data/cpuhostnames or even api/data and the loop around hosts or tempsources should be in the http://xxx.cpus client rather than the api. 
+
+Add general to homebridge
+
+Fixa datafilen och dess js: gör konstiga saker
+Kommentera case sensitive
+
+Oledupdate.js
+	Full screen with info
+		   12:34 
+		 Mon  12/12
+		U:12   K:06
+		 :      :  
+
+api index.js
+	Decimaljustering digitsbeforedot=2 digitsafterdot=0 dot=always/never/auto
+	
+Oled.js
+	clear does not work
+	writelines. Testa {}. Testa ?line1=xxxxy
+	New function replace :. (x,y,oldletter,newletter) used by Blink   :. (x,y,letter)
+	clear: Also reset blinks
+	Font multiplier: ?multiplier=2 in writeLine and writeLetter
+	writeLetter ???
+
+
+api.js
+	skriv en function getW1 lik getTelldus
+	ta bort /telldus
+	switcha format/temp till temp/format
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    	<meta charset="UTF-8">
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    	<title>Sample Site</title>
+
+
+    <style>
+	html {
+		width: 100%;
+	}
+        body { 
+		background:black;
+		padding-top:50px;
+		color:white;
+		width: 100%;
+		overflow: hidden;
+	}
+	#myChart {
+		border-width: 1px;
+		border-style: solid;
+		border-color: Black;
+	}
+	.chart-container {
+		position: relative;
+    		width: 90vw;
+    		height: 90vh;
+	}
+	.center {
+		text-align: center;
+	}
+	.clock {
+		font-size: 25vmin;
+	}
+	.date {
+		font-size: 8vmin;
+	}
+	.temp {
+		font-size: 8vmin;
+		font-family: monospace;
+	}
+    </style>
+</head>
+<body>
+
+
+
+	<div class="center">
+		<br><br><div class="temp" ><span id="oled"></span> </div>
+	</div>
+
+
+
+<script>
+	// Things to adjust if required
+	var UpdateInterval = 20 // Double number of seconds as we tick halfseconds
+
+	// Internal variables
+	var h ; var m ; var s
+	var counter = 0
+	var tick = 500
+
+
+
+	function update () {
+		updateOled()
+	}
+	function updateOled () {
+
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let textArray = JSON.parse(this.responseText)
+				let textHtml = ""
+				for (let i = 0 ;  i < textArray.length;(i++) ) {
+					text = textArray[i]
+					//console.log("In opdateOled. i is: "+i)
+					textHtml = textHtml + "<br>" + text
+				}
+				document.getElementById("oled").innerHTML = textHtml
+			}
+		}
+		xhttp.open("GET","api/oled", true)
+		xhttp.send()
+
+	}
+
+	function revolution() {
+		if (counter++ === UpdateInterval) {
+			counter=0
+			update()
+		}
+		//updateClock()
+		
+	}
+
+	revolution () 
+
+	
+	window.onload = function() {
+		setInterval( function() { revolution() }, tick)
+		revolution()
+		update()
+	}
+
+
+</script>
+
+
+
+
+</body>
+</html>
+
